@@ -715,15 +715,6 @@ If you use OmniWordlist Pro in research:
 
 ---
 
-## Support
-
-- 📧 Email: aaryan@omniwl.dev
-- 🐛 Issues: GitHub Issues
-- 💬 Discussions: GitHub Discussions
-- 📚 Docs: Full API docs in `target/doc/omniwordlist/index.html`
-
----
-
 **Built with ❤️ in Rust** 🦀
 
 
