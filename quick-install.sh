@@ -55,14 +55,48 @@ main() {
     echo ""
     
     print_step "Building OmniWordlist Pro (release mode)..."
-    echo -e "${BLUE}This may take 3-8 minutes on first build...${NC}"
+    echo -e "${CYAN}📦 First build takes 5-15 minutes (compiling dependencies)${NC}"
+    echo -e "${CYAN}💡 Watching compilation progress:${NC}"
     echo ""
     
-    if cargo build --release 2>&1 | tail -20; then
-        print_success "Build completed!"
+    # Start time for progress tracking
+    START_TIME=$(date +%s)
+    CRATE_COUNT=0
+    
+    # Run cargo with verbose output to show each crate being compiled
+    if cargo build --release -v 2>&1 | while read -r line; do
+        # Show which crate is being compiled
+        if echo "$line" | grep -q "Compiling"; then
+            CRATE_COUNT=$((CRATE_COUNT + 1))
+            crate_info=$(echo "$line" | sed 's/.*Compiling \([^ ]*\).*/\1/')
+            echo -e "${CYAN}  ⚙️  Compiling${NC} $crate_info"
+        fi
+        
+        # Show dependency resolution
+        if echo "$line" | grep -q "Resolving\|Updating"; then
+            echo -e "${YELLOW}  🔗 ${NC}$(echo "$line" | sed 's/.*Resolving //' | sed 's/.*Updating //')"
+        fi
+        
+        # Show when running tests
+        if echo "$line" | grep -q "Running\|test"; then
+            echo -e "${GREEN}  ✓ ${NC}Tests running..."
+        fi
+        
+        # Show final status
+        if echo "$line" | grep -q "Finished"; then
+            ELAPSED=$(( $(date +%s) - START_TIME ))
+            echo ""
+            echo -e "${GREEN}  ✓ Finished in ${ELAPSED} seconds${NC}"
+        fi
+    done; then
+        true
     else
-        print_error "Build failed!"
-        exit 1
+        print_error "Build failed! Here's what went wrong:"
+        echo ""
+        echo -e "${YELLOW}Running build again to show error details:${NC}"
+        echo ""
+        cargo build --release 2>&1 | tail -50
+        return 1
     fi
     echo ""
     

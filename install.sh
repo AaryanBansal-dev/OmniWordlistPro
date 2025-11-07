@@ -66,12 +66,36 @@ clone_repo() {
 }
 
 build_binary() {
-    print_step "Building OmniWordlist Pro (this may take 2-5 minutes)..."
+    print_step "Building OmniWordlist Pro..."
+    echo -e "${YELLOW}📦 First build takes 5-15 minutes (compiling dependencies)${NC}"
+    echo -e "${YELLOW}💡 You'll see crates being compiled below:${NC}"
+    echo ""
     
-    if cargo build --release 2>&1 | grep -E "error|warning: unused" > /tmp/cargo_build.log; then
-        print_error "Build had warnings/errors. Check /tmp/cargo_build.log"
+    # Run cargo with verbose output to show progress
+    if cargo build --release -v 2>&1 | while read -r line; do
+        # Show compiling lines with a spinning indicator
+        if echo "$line" | grep -q "Compiling"; then
+            crate_name=$(echo "$line" | sed 's/.*Compiling \([^ ]*\).*/\1/' | cut -d' ' -f1)
+            echo -e "${BLUE}  ⚙️  ${NC}$crate_name"
+        fi
+        # Show dependency graph resolution
+        if echo "$line" | grep -q "Resolving"; then
+            echo -e "${YELLOW}  🔗 ${NC}$(echo $line | sed 's/.*Resolving //')"
+        fi
+        # Show when crates are finished
+        if echo "$line" | grep -q "Finished"; then
+            echo -e "${GREEN}  ✓ ${NC}$(echo $line | sed 's/.*Finished //')"
+        fi
+    done; then
+        true
+    else
+        print_error "Build failed! Showing last 50 lines of output:"
+        echo ""
+        cargo build --release 2>&1 | tail -50
         return 1
     fi
+    
+    echo ""
     
     if [ ! -f "target/release/omni" ]; then
         print_error "Binary not found after build!"
