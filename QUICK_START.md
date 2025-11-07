@@ -7,7 +7,7 @@
 ## 1️⃣ **Global Install (Easiest)**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/aaryan/omniwordlist-pro/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AaryanBansal-dev/OmniWordlistPro/main/install.sh | bash
 ```
 
 **Then use anywhere:**
@@ -21,8 +21,8 @@ owpro preview --preset pentest_default --sample-size 50
 ## 2️⃣ **Local Development Install**
 
 ```bash
-git clone https://github.com/aaryan/omniwordlist-pro.git
-cd omniwordlist-pro
+git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
+cd OmniWordlistPro
 ./quick-install.sh
 ```
 

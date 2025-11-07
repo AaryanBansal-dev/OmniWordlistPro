@@ -28,8 +28,8 @@ owpro preview --preset pentest_default --sample-size 50
 
 ### 2️⃣ **Quick Local Build (Recommended for Developers)**
 ```bash
-git clone https://github.com/aaryan/omniwordlist-pro.git
-cd omniwordlist-pro
+git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
+cd OmniWordlistPro
 ./quick-install.sh
 ```
 - ✅ Clones repo + builds locally
@@ -47,8 +47,8 @@ owpro run --min 3 --max 5 --charset abc -o out.txt
 
 ### 3️⃣ **Manual Build (Full Control)**
 ```bash
-git clone https://github.com/aaryan/omniwordlist-pro.git
-cd omniwordlist-pro
+git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
+cd OmniWordlistPro
 cargo build --release
 sudo cp target/release/omni /usr/local/bin/owpro
 ```
@@ -236,8 +236,8 @@ cargo build --release --verbose
 
 2. **Or Test Local Build:**
    ```bash
-   git clone https://github.com/aaryan/omniwordlist-pro.git
-   cd omniwordlist-pro
+   git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
+   cd OmniWordlistPro
    ./quick-install.sh
    ```
 

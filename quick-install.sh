@@ -137,7 +137,7 @@ main() {
         echo ""
     fi
     
-    echo -e "${BLUE}Documentation: https://github.com/aaryan/omniwordlist-pro${NC}"
+    echo -e "${BLUE}Documentation: https://github.com/AaryanBansal-dev/OmniWordlistPro${NC}"
     echo ""
 }
 

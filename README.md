@@ -2,9 +2,35 @@
 
 **Version:** 1.1.0  
 **Author:** Aaryan Bansal  
-**Date:** 2025-11-06  
+**Date:** 2025-11-07  
 **Status:** Design → Implementation Complete  
-**Language:** 100% Pure Rust 🦀
+**Language:** 100% Pure Rust 🦀  
+**Repository:** https://github.com/AaryanBansal-dev/OmniWordlistPro
+
+---
+
+## ⚡ Quick Installation
+
+### 🎯 One-Command Setup (Recommended)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AaryanBansal-dev/OmniWordlistPro/main/install.sh | bash
+```
+
+**Then use immediately:**
+```bash
+owpro info
+owpro list-presets
+owpro run --preset pentest_default -o wordlist.txt
+```
+
+### 📚 Full Installation Guide
+
+For detailed installation instructions, troubleshooting, and alternative setup methods, see **[INSTALL.md](INSTALL.md)** (comprehensive guide with 3 installation options).
+
+### 📖 Quick Reference
+
+For command examples and quick usage, see **[QUICK_START.md](QUICK_START.md)**.
 
 ---
 
@@ -43,7 +69,7 @@ Perfect for:
 **For users:** Download and install globally (installs to `/usr/local/bin/owpro`):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/aaryan/omniwordlist-pro/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AaryanBansal-dev/OmniWordlistPro/main/install.sh | bash
 ```
 
 This will automatically:
@@ -68,8 +94,8 @@ owpro run --min 3 --max 5 --charset abc -o output.txt
 **For developers:** Clone and build locally:
 
 ```bash
-git clone https://github.com/aaryan/omniwordlist-pro.git
-cd omniwordlist-pro
+git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
+cd OmniWordlistPro
 
 # Run the quick install script
 ./quick-install.sh
@@ -94,8 +120,8 @@ owpro list-presets
 
 ```bash
 # Clone
-git clone https://github.com/aaryan/omniwordlist-pro.git
-cd omniwordlist-pro
+git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
+cd OmniWordlistPro
 
 # Build
 cargo build --release
@@ -662,7 +688,7 @@ If you use OmniWordlist Pro in research:
   author = {Aaryan Bansal},
   title = {OmniWordlist Pro: Enterprise Wordlist Generation in Rust},
   year = {2024},
-  url = {https://github.com/aaryan/omniwordlist-pro}
+  url = {https://github.com/AaryanBansal-dev/OmniWordlistPro}
 }
 ```
 

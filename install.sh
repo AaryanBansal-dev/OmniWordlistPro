@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # OmniWordlist Pro - Automatic Installation Script
-# Usage: curl -fsSL https://raw.githubusercontent.com/aaryan/omniwordlist-pro/main/install.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/AaryanBansal-dev/OmniWordlistPro/main/install.sh | bash
 
 set -e
 
@@ -55,7 +55,7 @@ clone_repo() {
     else
         print_step "Cloning OmniWordlist Pro repository..."
         mkdir -p "$(dirname "$INSTALL_DIR")"
-        git clone https://github.com/aaryan/omniwordlist-pro.git "$INSTALL_DIR" 2>/dev/null || {
+        git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git "$INSTALL_DIR" 2>/dev/null || {
             print_error "Failed to clone repository. Check your internet connection."
             exit 1
         }
@@ -159,10 +159,10 @@ show_help() {
     echo -e "  ${YELLOW}owpro fields --categories${NC}"
     echo ""
     echo -e "${BLUE}Documentation:${NC}"
-    echo "  📚 https://github.com/aaryan/omniwordlist-pro#readme"
+    echo "  📚 https://github.com/AaryanBansal-dev/OmniWordlistPro#readme"
     echo ""
     echo -e "${BLUE}Updates:${NC}"
-    echo "  To update: ${YELLOW}curl -fsSL https://raw.githubusercontent.com/aaryan/omniwordlist-pro/main/install.sh | bash${NC}"
+    echo "  To update: ${YELLOW}curl -fsSL https://raw.githubusercontent.com/AaryanBansal-dev/OmniWordlistPro/main/install.sh | bash${NC}"
     echo ""
 }
 
