@@ -312,7 +312,7 @@
 
 ## Contributing Features
 
-Want to add a feature? See [DEVELOPMENT.md](DEVELOPMENT.md) for:
+Want to add a feature? See [DEVELOPMENT.md](../DEVELOPMENT.md) for:
 - How to add transforms
 - How to add filters
 - How to add fields
