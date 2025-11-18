@@ -301,9 +301,20 @@ fn apply_diacritic_expand(token: &str) -> crate::Result<String> {
 }
 
 fn apply_diacritic_strip(token: &str) -> crate::Result<String> {
-    let normalized = unicode_normalization::UnicodeNormalization::nfd(token);
+    use unicode_normalization::UnicodeNormalization;
+    let normalized = token.nfd();
     let result: String = normalized
-        .filter(|ch| !unicode_categories::is_mark_nonspacing(*ch))
+        .filter(|ch| {
+            // Keep only non-combining marks (category Mn)
+            !matches!(
+                *ch as u32,
+                0x0300..=0x036F | // Combining Diacritical Marks
+                0x1AB0..=0x1AFF | // Combining Diacritical Marks Extended
+                0x1DC0..=0x1DFF | // Combining Diacritical Marks Supplement
+                0x20D0..=0x20FF | // Combining Diacritical Marks for Symbols
+                0xFE20..=0xFE2F   // Combining Half Marks
+            )
+        })
         .collect();
     Ok(result)
 }

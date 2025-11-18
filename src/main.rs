@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand};
 use omniwordlist::{Config, Generator, AppState};
 use std::path::PathBuf;
+use colored::Colorize;
 
 #[derive(Parser)]
 #[command(name = "OmniWordlist Pro")]
@@ -419,7 +420,7 @@ fn list_presets(tag: Option<String>) -> omniwordlist::Result<()> {
     println!();
 
     for preset in presets {
-        println!("  {} v{}", colored::Colorize::cyan(&preset.name), preset.version);
+        println!("  {} v{}", preset.name.cyan(), preset.version);
         println!("    {}", preset.description);
         println!("    Tags: {}", preset.tags.join(", "));
         println!();
@@ -432,7 +433,7 @@ fn show_preset(name: &str) -> omniwordlist::Result<()> {
     let manager = omniwordlist::presets::PresetManager::new();
 
     if let Some(preset) = manager.get(name) {
-        println!("📋 Preset: {}", colored::Colorize::cyan(&preset.name));
+        println!("📋 Preset: {}", preset.name.cyan());
         println!("Description: {}", preset.description);
         println!("Version: {}", preset.version);
         println!("Tags: {}", preset.tags.join(", "));
@@ -482,11 +483,11 @@ fn show_fields(
 
     if let Some(cat) = category {
         let fields = FieldManager::fields_by_category(&cat);
-        println!("📊 Fields in category '{}':", colored::Colorize::cyan(&cat));
+        println!("📊 Fields in category '{}':", cat.cyan());
         println!();
 
         for field in fields.iter().take(50) {
-            println!("  {} [{}]", colored::Colorize::yellow(&field.id), field.group);
+            println!("  {} [{}]", field.id.yellow(), field.group);
             if !field.examples.is_empty() {
                 println!("    Examples: {}", field.examples.join(", "));
             }
@@ -501,11 +502,11 @@ fn show_fields(
             .filter(|f| f.id.contains(&search_term) || f.description.contains(&search_term))
             .collect();
 
-        println!("🔍 Fields matching '{}':", colored::Colorize::cyan(&search_term));
+        println!("🔍 Fields matching '{}':", search_term.cyan());
         println!();
 
         for field in matching.iter().take(50) {
-            println!("  {} [{}]", colored::Colorize::yellow(&field.id), field.group);
+            println!("  {} [{}]", field.id.yellow(), field.group);
         }
 
         if matching.len() > 50 {

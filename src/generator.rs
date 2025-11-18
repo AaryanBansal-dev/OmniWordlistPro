@@ -189,7 +189,6 @@ impl Generator {
         self.permute_helper(
             chars,
             length,
-            &mut 0..chars.len(),
             &mut String::new(),
             &mut std::collections::HashSet::new(),
             result,
@@ -200,7 +199,6 @@ impl Generator {
         &self,
         chars: &[char],
         length: usize,
-        indices: &mut dyn Iterator<Item = usize>,
         current: &mut String,
         used: &mut std::collections::HashSet<usize>,
         result: &mut Vec<String>,
@@ -214,13 +212,7 @@ impl Generator {
             if !used.contains(&i) {
                 current.push(chars[i]);
                 used.insert(i);
-                
-                for j in 0..chars.len() {
-                    if !used.contains(&j) {
-                        self.permute_helper(chars, length, &mut (j..chars.len()), current, used, result)?;
-                    }
-                }
-                
+                self.permute_helper(chars, length, current, used, result)?;
                 current.pop();
                 used.remove(&i);
             }

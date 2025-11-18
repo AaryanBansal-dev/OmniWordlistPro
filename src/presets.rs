@@ -17,6 +17,7 @@ pub struct Preset {
     pub updated_at: String,
 }
 
+#[derive(Debug)]
 pub struct PresetManager {
     presets: HashMap<String, Preset>,
     presets_dir: std::path::PathBuf,

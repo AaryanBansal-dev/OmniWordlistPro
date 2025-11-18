@@ -40,6 +40,24 @@ pub enum Error {
 
     #[error("Anyhow: {0}")]
     Other(#[from] anyhow::Error),
+
+    #[error("LZ4 compression error: {0}")]
+    Lz4Error(String),
+
+    #[error("TOML serialization error: {0}")]
+    TomlSerError(String),
+}
+
+impl From<lz4_flex::frame::Error> for Error {
+    fn from(err: lz4_flex::frame::Error) -> Self {
+        Error::Lz4Error(err.to_string())
+    }
+}
+
+impl From<toml::ser::Error> for Error {
+    fn from(err: toml::ser::Error) -> Self {
+        Error::TomlSerError(err.to_string())
+    }
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

@@ -181,7 +181,7 @@ pub fn visual_similarity_score(s: &str) -> f64 {
         ("5", "s"), ("7", "t"), ("8", "b"),
     ];
     
-    let mut similarity = 0.0;
+    let mut similarity: f64 = 0.0;
     for (pair1, pair2) in similar_pairs {
         if s.contains(pair1) && s.contains(pair2) {
             similarity += 0.1;
