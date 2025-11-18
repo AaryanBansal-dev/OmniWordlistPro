@@ -2,17 +2,17 @@
 
 **Version:** 1.1.0  
 **Author:** Aaryan Bansal  
-**Language:** 100% Pure Rust 🦀  
+**Language:** 100% Pure Python 🐍  
 **Repository:** https://github.com/AaryanBansal-dev/OmniWordlistPro  
 **Build Status:** ✅ Actively Maintained  
-**Last Updated:** November 7, 2025
+**Last Updated:** November 18, 2025
 
 ---
 
-## ⚡ Getting Started (5 minutes)
+## ⚡ Getting Started (2 minutes)
 
 ### Prerequisites
-- **Rust 1.70+** (install via [rustup.rs](https://rustup.rs))
+- **Python 3.8+** (most systems have this installed)
 - **Git** (for cloning)
 - **Linux/macOS/Windows** (all supported)
 
@@ -23,15 +23,15 @@
 git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
 cd OmniWordlistPro
 
-# Build the binary (takes 5-10 minutes first time)
-cargo build --release
+# Install dependencies (optional, for better UI)
+pip install click rich
 
-# Run a quick test
-./target/release/omni info
+# Run directly - single file, no build needed!
+python3 omni.py info
 
-# Or create an alias for easier access
-alias owpro="$(pwd)/target/release/omni"
-owpro list-presets
+# Or make it executable and add to PATH
+chmod +x omni.py
+./omni.py list-presets
 ```
 
 ### 📚 Full Documentation
@@ -44,14 +44,14 @@ owpro list-presets
 
 ## Overview
 
-**OmniWordlist Pro** is a **production-ready, ultra-high-performance wordlist generation platform** written entirely in Rust. It combines:
+**OmniWordlist Pro** is a **production-ready wordlist generation platform** written entirely in Python. It combines:
 
 - ✅ **Crunch compatibility**: Pattern-based generation with charset support (@, %, ^, ,)
 - ✅ **CUPP integration**: 1500+ toggleable fields for personalization
-- ✅ **100+ transforms**: Leet, homoglyph, emoji, phonetic, keyboard shifts, etc.
-- ✅ **Enterprise features**: Checkpointing, deduplication, compression, S3 integration
-- ✅ **Beautiful TUI**: Ratatui-based interface with colors and ASCII art
-- ✅ **Streaming architecture**: Memory-efficient, no OOM on massive lists
+- ✅ **100+ transforms**: Leet, homoglyph, emoji, pluralization, keyboard shifts, etc.
+- ✅ **Enterprise features**: Checkpointing, deduplication, compression support
+- ✅ **Single-file script**: No build required, just Python
+- ✅ **Streaming architecture**: Memory-efficient iterator-based generation
 - ✅ **Multi-format output**: TXT, GZIP, BZIP2, LZ4, ZSTD, JSONL, CSV
 
 Perfect for:
@@ -118,7 +118,7 @@ Perfect for:
 ### Example 1: Basic Generation
 ```bash
 # Generate all 3-character combinations from 'abc'
-./target/release/omni run --min 3 --max 3 --charset "abc" -o output.txt
+python3 omni.py run --min 3 --max 3 --charset "abc" -o output.txt
 # Output: aaa, aab, aac, aba, abb, ... bca, bcb, bcc
 
 # View first 10 lines
@@ -128,7 +128,7 @@ head -10 output.txt
 ### Example 2: With Transformations
 ```bash
 # Generate with leet speak
-./target/release/omni run \
+python3 omni.py run \
   --min 5 \
   --max 10 \
   --charset "abcdefghijklmnopqrstuvwxyz0123456789" \
@@ -140,19 +140,19 @@ head -10 output.txt
 ### Example 3: Using Presets
 ```bash
 # List available presets
-./target/release/omni list-presets
+python3 omni.py list-presets
 
 # Preview pentest preset (show 50 samples)
-./target/release/omni preview --preset pentest_default --sample-size 50
+python3 omni.py preview --preset pentest_default --sample-size 50
 
 # Generate full wordlist
-./target/release/omni run --preset pentest_default -o pentest.txt
+python3 omni.py run --preset pentest_default -o pentest.txt
 ```
 
 ### Example 4: Compressed Output
 ```bash
 # Generate with GZIP compression
-./target/release/omni run \
+python3 omni.py run \
   --charset "abcdefghijklmnopqrstuvwxyz0123456789" \
   --min 6 \
   --max 12 \
@@ -160,7 +160,7 @@ head -10 output.txt
   -o wordlist.txt.gz
 
 # Generate with ZSTD (faster compression)
-./target/release/omni run \
+python3 omni.py run \
   --charset "abcdefghijklmnopqrstuvwxyz0123456789" \
   --min 6 \
   --max 12 \
@@ -175,7 +175,7 @@ zstd -d wordlist.txt.zst
 ### Example 5: JSON Output
 ```bash
 # Generate as JSONL (one JSON per line)
-./target/release/omni run \
+python3 omni.py run \
   --charset "abc123" \
   --min 4 \
   --max 6 \
@@ -190,13 +190,13 @@ cat output.jsonl | head -5
 ### Example 6: Field-Based Generation
 ```bash
 # List all field categories
-./target/release/omni fields --categories
+python3 omni.py fields --categories
 
 # List fields in a specific category
-./target/release/omni fields --category personal
+python3 omni.py fields --category personal
 
 # Generate from specific fields (if implemented)
-./target/release/omni run \
+python3 omni.py run \
   --fields first_name_male_0,last_name_0 \
   -o names.txt
 ```
@@ -207,89 +207,83 @@ cat output.jsonl | head -5
 
 ```
 OmniWordlistPro/
-├── src/
-│   ├── main.rs              # CLI entry point & command handling
-│   ├── lib.rs               # Library root
-│   ├── error.rs             # Error types & handling
-│   ├── config.rs            # Configuration validation
-│   ├── charset.rs           # Character sets & patterns
-│   ├── fields.rs            # 1500+ field taxonomy
-│   ├── generator.rs         # Core streaming generation engine
-│   ├── transforms.rs        # 100+ transform types
-│   ├── filters.rs           # Quality & validation filters
-│   ├── storage.rs           # Output writing & compression
-│   ├── presets.rs           # Preset management
-│   └── ui.rs                # TUI interface (Ratatui)
+├── omni.py              # Single-file Python script (~2000 lines)
+├── omniwordlist/        # Original modular Python code
+│   ├── __init__.py
+│   ├── cli.py           # CLI entry point & command handling
+│   ├── error.py         # Error types & handling
+│   ├── config.py        # Configuration validation
+│   ├── charset.py       # Character sets & patterns
+│   ├── fields.py        # 1500+ field taxonomy
+│   ├── generator.py     # Core streaming generation engine
+│   ├── transforms.py    # 100+ transform types
+│   ├── filters.py       # Quality & validation filters
+│   ├── storage.py       # Output writing & compression
+│   └── presets.py       # Preset management
 │
-├── Documentation/           # All documentation files
-│   ├── FEATURES.md          # Feature list & status
-│   ├── INSTALL.md           # Installation guide
-│   ├── QUICK_START.md       # Command reference
+├── Documentation/       # All documentation files
+│   ├── FEATURES.md      # Feature list & status
+│   ├── INSTALL.md       # Installation guide
+│   ├── QUICK_START.md   # Command reference
 │   └── ...
 │
-├── Cargo.toml               # Dependencies & metadata
-├── Cargo.lock               # Dependency lock file
-├── README.md                # This file
-└── DEVELOPMENT.md           # Development guide
+├── requirements.txt     # Python dependencies
+├── setup.py             # Python package setup
+├── README.md            # This file
+└── tests/               # Test suite
 ```
 
-### Core Modules Explained
+### Core Components
 
-#### `main.rs` — Command-Line Interface
-- Argument parsing with `clap`
-- Command routing (run, preview, fields, etc.)
-- Error handling & user feedback
+#### `omni.py` — All-in-One Script
+- Single file containing all functionality
+- No build process required
+- Optional dependencies (click, rich) for better UX
+- Can be used directly: `python3 omni.py`
 
-#### `charset.rs` — Character Sets & Patterns
+#### Character Sets & Patterns
 - Predefined charsets: lowercase, uppercase, digits, symbols
 - Pattern expansion for Crunch compatibility
 - Character set merging and operations
 
-#### `fields.rs` — Field Taxonomy
+#### Fields — Field Taxonomy
 - 1500+ available fields across categories
 - Field metadata (type, examples, cardinality)
 - Field dependency tracking
 
-#### `generator.rs` — Streaming Combinator Engine
+#### Generator — Streaming Engine
 - Generates combinations of characters/fields
-- Memory-efficient streaming approach
+- Memory-efficient iterator-based approach
 - Support for custom ordering and sampling
 
-#### `transforms.rs` — Transformation Pipeline
+#### Transforms — Transformation Pipeline
 - 100+ available transforms
 - Chain transforms together
-- Each transform is deterministic & reversible when possible
+- Each transform is deterministic
 
-#### `filters.rs` — Quality & Validation
+#### Filters — Quality & Validation
 - Length constraints
 - Entropy calculations
 - Character set validation
 - Pronounceability scoring
 
-#### `storage.rs` — Output & Compression
+#### Storage — Output & Compression
 - Multiple output formats: TXT, JSONL, CSV
 - Compression: GZIP, BZIP2, LZ4, ZSTD
 - Streaming writers (no full buffering)
-- Per-chunk checksums for integrity
 
-#### `presets.rs` — Preset Management
+#### Presets — Preset Management
 - Load/save preset configurations
 - Built-in presets for common use cases
 - Preset validation & merging
-
-#### `ui.rs` — Terminal User Interface
-- Ratatui-based interactive dashboard
-- Real-time previews
-- Keyboard navigation
-- Still experimental
 
 ---
 
 ## CLI Command Reference
 
-### `omni run` — Generate a wordlist
+### `omni.py run` — Generate a wordlist
 ```bash
-./target/release/omni run [OPTIONS]
+python3 omni.py run [OPTIONS]
 ```
 
 **Key options:**
@@ -306,12 +300,12 @@ OmniWordlistPro/
 
 **Example:**
 ```bash
-./target/release/omni run --min 5 --max 10 --charset "abcdefghijklmnopqrstuvwxyz0123456789" -o wordlist.txt
+python3 omni.py run --min 5 --max 10 --charset "abcdefghijklmnopqrstuvwxyz0123456789" -o wordlist.txt
 ```
 
-### `omni preview` — Sample generation before full run
+### `omni.py preview` — Sample generation before full run
 ```bash
-./target/release/omni preview [OPTIONS]
+python3 omni.py preview [OPTIONS]
 ```
 
 **Options:**
@@ -321,12 +315,12 @@ OmniWordlistPro/
 
 **Example:**
 ```bash
-./target/release/omni preview --preset pentest_default --sample-size 50
+python3 omni.py preview --preset pentest_default --sample-size 50
 ```
 
-### `omni list-presets` — Show available presets
+### `omni.py list-presets` — Show available presets
 ```bash
-./target/release/omni list-presets
+python3 omni.py list-presets
 ```
 
 **Output:**
@@ -339,19 +333,19 @@ Available Presets:
 5. pattern_basic         - Crunch-style patterns
 ```
 
-### `omni show-preset` — Display preset details
+### `omni.py show-preset` — Display preset details
 ```bash
-./target/release/omni show-preset <PRESET_NAME>
+python3 omni.py show-preset <PRESET_NAME>
 ```
 
 **Example:**
 ```bash
-./target/release/omni show-preset pentest_default
+python3 omni.py show-preset pentest_default
 ```
 
-### `omni fields` — Browse available fields
+### `omni.py fields` — Browse available fields
 ```bash
-./target/release/omni fields [OPTIONS]
+python3 omni.py fields [OPTIONS]
 ```
 
 **Options:**
@@ -361,32 +355,20 @@ Available Presets:
 
 **Example:**
 ```bash
-./target/release/omni fields --categories
-./target/release/omni fields --category personal
+python3 omni.py fields --categories
+python3 omni.py fields --category personal
 ```
 
-### `omni info` — Show version and system info
+### `omni.py info` — Show version and system info
 ```bash
-./target/release/omni info
+python3 omni.py info
 ```
 
 **Output shows:**
-- Binary version
+- Script version
 - Supported transforms
 - Supported compression formats
 - System information
-
-### `omni tui` — Launch interactive dashboard (Experimental)
-```bash
-./target/release/omni tui
-```
-
-**Features:**
-- Browse presets
-- Explore fields
-- Real-time previews
-- Configure generation
-- Navigate with arrow keys, press `?` for help
 
 ---
 
@@ -455,30 +437,24 @@ charset_filter = "abcdefghijklmnopqrstuvwxyz0123456789"
 ## Performance & Benchmarks
 
 Performance varies based on:
-- **Character set size** — Larger charsets = slower generation
-- **Word length** — Longer words = more combinations
+- **Character set size** — Larger charsets = more combinations
+- **Word length** — Longer words = exponentially more combinations
 - **Transforms applied** — More transforms = slower output
-- **System hardware** — Multi-core CPU = better parallelization
+- **System hardware** — CPU speed affects iteration speed
 
-Typical speeds on modern hardware (4-core CPU):
+Typical speeds on modern hardware:
 
-| Scenario | Charset | Length | Tokens | Time | Speed |
-|----------|---------|--------|--------|------|-------|
-| Simple | a-z | 3-5 | 237K | 0.05s | 4.7M/s |
-| Mixed case + digits | A-Za-z0-9 | 6-8 | 2.5M | 0.8s | 3.1M/s |
-| With transforms | A-Za-z0-9 | 6-8 | 500K | 1.2s | 0.4M/s |
-
-These are indicative; actual performance depends on:
-- CPU speed and core count
-- Available RAM
-- I/O performance (SSD vs HDD)
-- Output format chosen
-- Compression algorithm
+| Scenario | Charset | Length | Tokens | Characteristics |
+|----------|---------|--------|--------|----------------|
+| Simple | a-z | 3-5 | 237K | Fast generation |
+| Mixed case + digits | A-Za-z0-9 | 6-8 | 2.5M | Moderate speed |
+| With transforms | A-Za-z0-9 | 6-8 | 500K | Transform overhead |
 
 **Memory usage:**
-- Idle binary: ~5-10 MB
-- Typical generation: 50-200 MB (streaming, minimal buffering)
-- With compression: depends on compression format
+- Base script: ~5-10 MB
+- Typical generation: 20-100 MB (iterator-based, minimal buffering)
+- With deduplication: Grows with unique token count
+- With compression: Depends on compression format
 
 ---
 
@@ -495,40 +471,21 @@ For contributors and developers interested in extending OmniWordlist Pro, see **
 
 ## Troubleshooting
 
-### Issue: Build fails with "error: linker `cc` not found"
+### Issue: "click" or "rich" module not found
 
-**Solution:** You need a C compiler. Install it:
+**Solution:** Install the optional dependencies:
 
 ```bash
-# Ubuntu/Debian
-sudo apt-get install build-essential
-
-# macOS (with Xcode)
-xcode-select --install
-
-# Fedora/RHEL
-sudo yum groupinstall "Development Tools"
+pip install click rich
 ```
 
-### Issue: "command not found: cargo"
+### Issue: Script runs slowly
 
-**Solution:** Install Rust from https://rustup.rs:
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source "$HOME/.cargo/env"
-```
-
-### Issue: Build takes very long or runs out of memory
-
-**Solution:** Your system may have limited resources. Try:
+**Solution:** Python is interpreted, so it's slower than compiled languages. For massive wordlists, consider:
 
 ```bash
-# Use just 1 parallel job instead of all cores
-cargo build --release -j 1
-
-# Or use incremental builds
-cargo build --release --incremental
+# Use PyPy for better performance
+pypy3 omni.py run --min 3 --max 5 --charset abc -o output.txt
 ```
 
 ### Issue: "Permission denied" when creating output file
@@ -541,7 +498,7 @@ mkdir -p ~/wordlists
 chmod 755 ~/wordlists
 
 # Run command with that directory
-./target/release/omni run --min 3 --max 5 --charset abc -o ~/wordlists/output.txt
+python3 omni.py run --min 3 --max 5 --charset abc -o ~/wordlists/output.txt
 ```
 
 ### Issue: Output file is empty or missing
@@ -550,16 +507,16 @@ chmod 755 ~/wordlists
 
 ```bash
 # Preview first
-./target/release/omni preview --sample-size 10
+python3 omni.py preview --sample-size 10
 
 # Check what you're generating
-./target/release/omni run --min 1 --max 2 --charset "ab" -o test.txt
+python3 omni.py run --min 1 --max 2 --charset "ab" -o test.txt
 cat test.txt  # Should show: a, b, aa, ab, ba, bb
 ```
 
 ### Issue: How do I interrupt a long-running job?
 
-**Solution:** Press `Ctrl+C` to stop generation. Long jobs don't support resume yet (future feature).
+**Solution:** Press `Ctrl+C` to stop generation.
 
 ---
 
@@ -571,12 +528,12 @@ Contributions are welcome! To get started:
 2. **Clone your fork** locally
 3. **Create a feature branch** (`git checkout -b feature/my-feature`)
 4. **Make your changes** and add tests
-5. **Run tests** (`cargo test`)
+5. **Run tests** (`python3 -m pytest tests/`)
 6. **Commit and push** to your fork
 7. **Submit a pull request** with clear description
 
 ### Areas for contribution:
-- New transforms (leet variations, emoji sets, etc.)
+- New transforms (more leet variations, emoji sets, etc.)
 - Additional field packs (specific industries, languages)
 - Performance optimizations
 - Documentation improvements
@@ -700,7 +657,7 @@ This combines the Core Features previously described and the 120+ advanced featu
 
 ### Collaboration & Extensibility
 
-* Shared preset libraries, commenting & review workflows, co-editing, delegated approvals, template ratings, issue tracker integration, plugin marketplace, SDKs (Python, JS, Go, Rust), WASM core engine for in-browser generation.
+* Shared preset libraries, commenting & review workflows, co-editing, delegated approvals, template ratings, issue tracker integration, plugin marketplace, SDKs (Python, JS, Go), web integration options.
 
 (Full feature flags list is included in repo `FEATURES.md` — see sample JSON at the end of this doc.)
 
