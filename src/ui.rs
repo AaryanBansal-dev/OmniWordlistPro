@@ -63,7 +63,7 @@ impl TuiApp {
         }
     }
 
-    pub fn render<B: Backend>(&self, frame: &mut Frame<B>) {
+    pub fn render(&self, frame: &mut Frame) {
         let state = self.state.lock();
 
         match state.current_screen {
@@ -75,7 +75,7 @@ impl TuiApp {
         }
     }
 
-    fn render_dashboard<B: Backend>(&self, frame: &mut Frame<B>, state: &AppState) {
+    fn render_dashboard(&self, frame: &mut Frame, state: &AppState) {
         let size = frame.size();
 
         let chunks = Layout::default()
@@ -245,19 +245,19 @@ impl TuiApp {
         frame.render_widget(logs, chunks[2]);
     }
 
-    fn render_presets<B: Backend>(&self, _frame: &mut Frame<B>, _state: &AppState) {
+    fn render_presets(&self, _frame: &mut Frame, _state: &AppState) {
         // Placeholder
     }
 
-    fn render_generator<B: Backend>(&self, _frame: &mut Frame<B>, _state: &AppState) {
+    fn render_generator(&self, _frame: &mut Frame, _state: &AppState) {
         // Placeholder
     }
 
-    fn render_monitor<B: Backend>(&self, _frame: &mut Frame<B>, _state: &AppState) {
+    fn render_monitor(&self, _frame: &mut Frame, _state: &AppState) {
         // Placeholder
     }
 
-    fn render_settings<B: Backend>(&self, _frame: &mut Frame<B>, _state: &AppState) {
+    fn render_settings(&self, _frame: &mut Frame, _state: &AppState) {
         // Placeholder
     }
 }

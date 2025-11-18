@@ -37,11 +37,23 @@ pub struct Config {
     /// Suppress duplicate adjacent characters (e.g., "2@" means max 2 adjacent @)
     pub duplicate_limit: Option<String>,
     
+    /// Invert output (first character changes most frequently, like counting)
+    pub invert: bool,
+    
+    /// Literal characters in pattern (don't expand these)
+    pub literal_chars: Option<String>,
+    
+    /// Split output into multiple files by size (bytes)
+    pub split_by_bytes: Option<u64>,
+    
+    /// Split output into multiple files by number of lines
+    pub split_by_lines: Option<u64>,
+    
+    /// Show status information (count, bytes before generation)
+    pub show_status: bool,
+    
     /// Enable permutations (no repeating characters)
     pub permutations_only: bool,
-    
-    /// Invert output (first character changes frequently)
-    pub invert: bool,
     
     /// Prefix to add to each token
     pub prefix: Option<String>,
@@ -111,8 +123,12 @@ impl Default for Config {
             max_bytes: None,
             max_lines: None,
             duplicate_limit: None,
-            permutations_only: false,
             invert: false,
+            literal_chars: None,
+            split_by_bytes: None,
+            split_by_lines: None,
+            show_status: false,
+            permutations_only: false,
             prefix: None,
             suffix: None,
             separator: None,

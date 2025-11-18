@@ -45,10 +45,8 @@ impl Generator {
         let pattern = self.config.pattern.as_ref()
             .ok_or_else(|| crate::Error::ConfigError("No pattern specified".to_string()))?;
         
-        let charset = crate::charset::expand_pattern(
-            pattern,
-            self.config.charset.as_deref(),
-        )?;
+        let literal_chars = self.config.literal_chars.as_deref();
+        let charset = crate::charset::expand_pattern(pattern, literal_chars)?;
         
         self.generate_from_charset(&charset)
     }
@@ -150,6 +148,12 @@ impl Generator {
                 .collect();
         }
 
+        // Apply duplicate suppression
+        tokens = self.apply_duplicate_suppression(tokens);
+
+        // Apply inversion
+        tokens = self.invert_tokens(tokens);
+
         Ok(tokens)
     }
 
@@ -189,7 +193,6 @@ impl Generator {
         self.permute_helper(
             chars,
             length,
-            &mut 0..chars.len(),
             &mut String::new(),
             &mut std::collections::HashSet::new(),
             result,
@@ -200,7 +203,6 @@ impl Generator {
         &self,
         chars: &[char],
         length: usize,
-        indices: &mut dyn Iterator<Item = usize>,
         current: &mut String,
         used: &mut std::collections::HashSet<usize>,
         result: &mut Vec<String>,
@@ -214,13 +216,7 @@ impl Generator {
             if !used.contains(&i) {
                 current.push(chars[i]);
                 used.insert(i);
-                
-                for j in 0..chars.len() {
-                    if !used.contains(&j) {
-                        self.permute_helper(chars, length, &mut (j..chars.len()), current, used, result)?;
-                    }
-                }
-                
+                self.permute_helper(chars, length, current, used, result)?;
                 current.pop();
                 used.remove(&i);
             }
@@ -332,7 +328,103 @@ impl Generator {
             unique_tokens: state.dedup_hashes.len(),
         }
     }
+
+    /// Apply duplicate suppression based on config
+    fn apply_duplicate_suppression(&self, tokens: Vec<String>) -> Vec<String> {
+        if let Some(dup_limit) = &self.config.duplicate_limit {
+            tokens.into_iter()
+                .filter(|token| self.check_duplicate_limit(token, dup_limit))
+                .collect()
+        } else {
+            tokens
+        }
+    }
+
+    /// Check if a token violates duplicate character limits
+    fn check_duplicate_limit(&self, token: &str, limit_spec: &str) -> bool {
+        // Parse limit_spec like "2@" meaning max 2 adjacent @ chars
+        // or "@@" meaning no adjacent duplicates for @
+        // For simplicity, check for any character repetition > limit
+        let limit = if let Some(num_str) = limit_spec.chars().take_while(|c| c.is_numeric()).collect::<String>().parse::<usize>().ok() {
+            num_str
+        } else {
+            1 // Default: no adjacent duplicates
+        };
+
+        let chars: Vec<char> = token.chars().collect();
+        let mut count = 1;
+        
+        for i in 1..chars.len() {
+            if chars[i] == chars[i-1] {
+                count += 1;
+                if count > limit {
+                    return false;
+                }
+            } else {
+                count = 1;
+            }
+        }
+        
+        true
+    }
+
+    /// Invert token order (for -i flag, makes first char change most frequently)
+    fn invert_tokens(&self, mut tokens: Vec<String>) -> Vec<String> {
+        if self.config.invert {
+            // Reverse the order - this makes the first character change most frequently
+            tokens.reverse();
+        }
+        tokens
+    }
+
+    /// Calculate total combinations for status display
+    pub fn calculate_combinations(&self, charset: &str, length: usize) -> u64 {
+        let charset_len = charset.chars().count() as u64;
+        if self.config.permutations_only {
+            // Permutations: n! / (n-r)!
+            let mut result = 1u64;
+            for i in 0..length {
+                result = result.saturating_mul(charset_len.saturating_sub(i as u64));
+            }
+            result
+        } else {
+            // Combinations with repetition: n^r
+            charset_len.saturating_pow(length as u32)
+        }
+    }
+
+    /// Show status information before generation
+    pub fn show_status_info(&self, charset: &str) -> crate::Result<()> {
+        if !self.config.show_status {
+            return Ok(());
+        }
+
+        println!("📊 Generation Status:");
+        println!("  Charset: {} ({} chars)", charset, charset.chars().count());
+        println!("  Length range: {} - {}", self.config.min_length, self.config.max_length);
+        
+        let mut total_combinations = 0u64;
+        let mut total_bytes = 0u64;
+        
+        for len in self.config.min_length..=self.config.max_length {
+            let combos = self.calculate_combinations(charset, len);
+            total_combinations = total_combinations.saturating_add(combos);
+            // Estimate bytes: each token = length + 1 (newline)
+            total_bytes = total_bytes.saturating_add(combos.saturating_mul((len + 1) as u64));
+        }
+        
+        println!("  Total combinations: {}", total_combinations);
+        println!("  Estimated size: {} bytes ({} KB, {} MB)", 
+            total_bytes, 
+            total_bytes / 1024,
+            total_bytes / 1024 / 1024
+        );
+        println!();
+        
+        Ok(())
+    }
 }
+
 
 #[derive(Debug, Clone)]
 pub struct GeneratorStats {

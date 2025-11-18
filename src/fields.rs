@@ -378,7 +378,7 @@ fn build_field_catalog() -> IndexMap<String, Field> {
                 category: "emoji".to_string(),
                 group: "sets".to_string(),
                 field_type: "string".to_string(),
-                examples: emojis.clone(),
+                examples: emojis.iter().map(|s| s.to_string()).collect(),
                 cardinality_estimate: 50,
                 sensitivity: FieldSensitivity::Low,
                 dependencies: vec![],
