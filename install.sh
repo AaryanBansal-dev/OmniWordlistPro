@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# OmniWordlist Pro - Automatic Installation Script
-# Usage: curl -fsSL https://raw.githubusercontent.com/AaryanBansal-dev/OmniWordlistPro/main/install.sh | bash
+# OmniWordlist Pro - Python Installation Script
+# Run from the project directory: ./install.sh
 
 set -e
 
@@ -9,213 +9,62 @@ set -e
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+CYAN='\033[0;36m'
+NC='\033[0m'
 
-# Functions
-print_header() {
-    echo -e "${BLUE}╔═══════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║${NC}  🦀 ${YELLOW}OmniWordlist Pro${NC} - Installation Script         ${BLUE}║${NC}"
-    echo -e "${BLUE}╚═══════════════════════════════════════════════════════════╝${NC}"
-    echo ""
-}
+echo ""
+echo -e "${CYAN}╔════════════════════════════════════════════╗${NC}"
+echo -e "${CYAN}║${NC}  🐍 ${YELLOW}OmniWordlist Pro${NC} - Python Setup  ${CYAN}║${NC}"
+echo -e "${CYAN}╚════════════════════════════════════════════╝${NC}"
+echo ""
 
-print_step() {
-    echo -e "${YELLOW}▶${NC} $1"
-}
+# Check if omni.py exists
+if [ ! -f "omni.py" ]; then
+    echo -e "${RED}✗${NC} omni.py not found!"
+    echo -e "${YELLOW}ℹ${NC} Please run this from the project root directory"
+    exit 1
+fi
 
-print_success() {
-    echo -e "${GREEN}✓${NC} $1"
-}
+# Check Python
+echo -e "${YELLOW}▶${NC} Checking Python installation..."
+if ! command -v python3 &> /dev/null; then
+    echo -e "${RED}✗${NC} Python 3 not found!"
+    echo -e "${YELLOW}ℹ${NC} Install from https://www.python.org/"
+    exit 1
+fi
 
-print_error() {
-    echo -e "${RED}✗${NC} $1"
-}
+PYTHON_VERSION=$(python3 --version)
+echo -e "${GREEN}✓${NC} $PYTHON_VERSION found"
 
-check_rust() {
-    if ! command -v rustc &> /dev/null; then
-        print_error "Rust is not installed!"
-        echo ""
-        echo -e "${YELLOW}Installing Rust...${NC}"
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-        source "$HOME/.cargo/env"
-        print_success "Rust installed successfully!"
-    else
-        print_success "Rust is installed ($(rustc --version | cut -d' ' -f2))"
-    fi
-}
+# Install dependencies
+echo -e "${YELLOW}▶${NC} Installing dependencies..."
+if pip3 install click rich 2>/dev/null; then
+    echo -e "${GREEN}✓${NC} Dependencies installed (click, rich)"
+else
+    echo -e "${YELLOW}ℹ${NC} Could not install dependencies system-wide"
+    echo -e "${YELLOW}ℹ${NC} Try: pip3 install --user click rich"
+fi
 
-clone_repo() {
-    INSTALL_DIR="${HOME}/.local/share/omniwordlist-pro"
-    
-    if [ -d "$INSTALL_DIR" ]; then
-        print_step "Directory already exists, updating..."
-        cd "$INSTALL_DIR"
-        git pull origin main 2>/dev/null || true
-    else
-        print_step "Cloning OmniWordlist Pro repository..."
-        mkdir -p "$(dirname "$INSTALL_DIR")"
-        git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git "$INSTALL_DIR" 2>/dev/null || {
-            print_error "Failed to clone repository. Check your internet connection."
-            exit 1
-        }
-        cd "$INSTALL_DIR"
-    fi
-    
-    print_success "Repository ready at: $INSTALL_DIR"
-}
+# Make executable
+chmod +x omni.py
+echo -e "${GREEN}✓${NC} Made omni.py executable"
 
-build_binary() {
-    print_step "Building OmniWordlist Pro..."
-    echo -e "${YELLOW}📦 First build takes 5-15 minutes (compiling dependencies)${NC}"
-    echo -e "${YELLOW}💡 You'll see crates being compiled below:${NC}"
+# Test
+if python3 omni.py --version &> /dev/null; then
     echo ""
-    
-    # Run cargo with verbose output to show progress
-    if cargo build --release -v 2>&1 | while read -r line; do
-        # Show compiling lines with a spinning indicator
-        if echo "$line" | grep -q "Compiling"; then
-            crate_name=$(echo "$line" | sed 's/.*Compiling \([^ ]*\).*/\1/' | cut -d' ' -f1)
-            echo -e "${BLUE}  ⚙️  ${NC}$crate_name"
-        fi
-        # Show dependency graph resolution
-        if echo "$line" | grep -q "Resolving"; then
-            echo -e "${YELLOW}  🔗 ${NC}$(echo $line | sed 's/.*Resolving //')"
-        fi
-        # Show when crates are finished
-        if echo "$line" | grep -q "Finished"; then
-            echo -e "${GREEN}  ✓ ${NC}$(echo $line | sed 's/.*Finished //')"
-        fi
-    done; then
-        true
-    else
-        print_error "Build failed! Showing last 50 lines of output:"
-        echo ""
-        cargo build --release 2>&1 | tail -50
-        return 1
-    fi
-    
+    echo -e "${GREEN}╔════════════════════════════════════════╗${NC}"
+    echo -e "${GREEN}║${NC}   Installation Complete! 🎉         ${GREEN}║${NC}"
+    echo -e "${GREEN}╚════════════════════════════════════════╝${NC}"
     echo ""
-    
-    if [ ! -f "target/release/omni" ]; then
-        print_error "Binary not found after build!"
-        return 1
-    fi
-    
-    print_success "Binary built successfully!"
-}
-
-install_global() {
-    print_step "Installing 'owpro' command globally..."
-    
-    BINARY_SOURCE="$(cd "$(dirname "$INSTALL_DIR")"; pwd)/omniwordlist-pro/target/release/omni"
-    INSTALL_PATH="/usr/local/bin/owpro"
-    
-    if [ -w "/usr/local/bin" ]; then
-        # No sudo needed
-        cp "$BINARY_SOURCE" "$INSTALL_PATH"
-        chmod +x "$INSTALL_PATH"
-        print_success "Installed to /usr/local/bin/owpro (no sudo needed)"
-    else
-        # Need sudo
-        if sudo -n true 2>/dev/null; then
-            # sudo available without password
-            sudo cp "$BINARY_SOURCE" "$INSTALL_PATH"
-            sudo chmod +x "$INSTALL_PATH"
-            print_success "Installed to /usr/local/bin/owpro (with sudo)"
-        else
-            # Fallback: Try to use sudo with prompt
-            sudo -p "Enter password for sudo: " cp "$BINARY_SOURCE" "$INSTALL_PATH" && \
-            sudo chmod +x "$INSTALL_PATH" && \
-            print_success "Installed to /usr/local/bin/owpro" || {
-                print_error "Failed to install globally (permission denied)"
-                echo ""
-                echo -e "${YELLOW}Fallback: Add to ~/.bashrc manually:${NC}"
-                echo "export PATH=\"$INSTALL_DIR/target/release:\$PATH\""
-                return 1
-            }
-        fi
-    fi
-}
-
-verify_installation() {
-    print_step "Verifying installation..."
-    
-    if ! command -v owpro &> /dev/null; then
-        # Try with full path if PATH hasn't been updated
-        if [ ! -f "/usr/local/bin/owpro" ]; then
-            print_error "Installation verification failed!"
-            echo ""
-            echo -e "${YELLOW}Try reloading your shell:${NC}"
-            echo "source ~/.bashrc"
-            return 1
-        fi
-    fi
-    
-    print_success "Installation verified!"
-}
-
-show_help() {
+    echo -e "${CYAN}Quick Start:${NC}"
+    echo -e "  python3 omni.py --help"
+    echo -e "  python3 omni.py info"
+    echo -e "  python3 omni.py list-presets"
     echo ""
-    echo -e "${GREEN}═══════════════════════════════════════════════════════════${NC}"
-    echo -e "${GREEN}Installation Complete! 🎉${NC}"
-    echo -e "${GREEN}═══════════════════════════════════════════════════════════${NC}"
+    echo -e "${CYAN}Optional: Add to PATH${NC}"
+    echo -e "  sudo ln -s \$(pwd)/omni.py /usr/local/bin/omni"
     echo ""
-    echo -e "${BLUE}Quick Start:${NC}"
-    echo ""
-    echo -e "  ${YELLOW}owpro info${NC}                    # Show version & features"
-    echo -e "  ${YELLOW}owpro list-presets${NC}             # List available presets"
-    echo -e "  ${YELLOW}owpro preview --preset pentest_default --sample-size 50${NC}"
-    echo -e "  ${YELLOW}owpro run --min 3 --max 5 --charset abc -o out.txt${NC}"
-    echo ""
-    echo -e "${BLUE}Examples:${NC}"
-    echo ""
-    echo -e "  # Generate pentest wordlist"
-    echo -e "  ${YELLOW}owpro run --preset pentest_default -o pentest.txt${NC}"
-    echo ""
-    echo -e "  # Preview with meme pack"
-    echo -e "  ${YELLOW}owpro preview --preset meme_humor_pack --sample-size 100${NC}"
-    echo ""
-    echo -e "  # Compressed output"
-    echo -e "  ${YELLOW}owpro run --charset 'abc123' --min 5 --max 10 --compress gzip -o wordlist.gz${NC}"
-    echo ""
-    echo -e "  # List all fields"
-    echo -e "  ${YELLOW}owpro fields --categories${NC}"
-    echo ""
-    echo -e "${BLUE}Documentation:${NC}"
-    echo "  📚 https://github.com/AaryanBansal-dev/OmniWordlistPro#readme"
-    echo ""
-    echo -e "${BLUE}Updates:${NC}"
-    echo "  To update: ${YELLOW}curl -fsSL https://raw.githubusercontent.com/AaryanBansal-dev/OmniWordlistPro/main/install.sh | bash${NC}"
-    echo ""
-}
-
-# Main execution
-main() {
-    print_header
-    
-    print_step "Checking prerequisites..."
-    check_rust
-    echo ""
-    
-    print_step "Cloning/updating repository..."
-    clone_repo
-    echo ""
-    
-    print_step "Building binary (release mode)..."
-    build_binary
-    echo ""
-    
-    print_step "Installing globally..."
-    install_global
-    echo ""
-    
-    print_step "Verifying installation..."
-    verify_installation
-    echo ""
-    
-    show_help
-}
-
-# Run main
-main
+else
+    echo -e "${RED}✗${NC} Installation test failed"
+    exit 1
+fi

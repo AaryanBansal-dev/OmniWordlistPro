@@ -49,7 +49,7 @@ Before installing, ensure you have:
 
 | Requirement | Version | How to Check | How to Install |
 |-------------|---------|--------------|----------------|
-| **Rust** | 1.70+ | `rustc --version` | Visit [rustup.rs](https://rustup.rs) |
+| **Python** | 1.70+ | `pythonc --version` | Visit [pythonup.rs](https://pythonup.rs) |
 | **Git** | Any modern | `git --version` | Install from git-scm.com |
 | **C Compiler** | Any | `gcc --version` or `clang --version` | See section below |
 | **Disk Space** | 500 MB+ | `df -h` | Clean up disk if needed |
@@ -62,29 +62,29 @@ Before installing, ensure you have:
 # Update package lists
 sudo apt-get update
 
-# Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# Install Python
+curl --proto '=https' --tlsv1.2 -sSf https://sh.pythonup.rs | sh
 source "$HOME/.cargo/env"
 
 # Install Git and build tools
 sudo apt-get install -y git build-essential
 
 # Verify
-rustc --version && cargo --version && git --version
+pythonc --version && cargo --version && git --version
 ```
 
 #### Linux (Fedora/RHEL/CentOS)
 
 ```bash
-# Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# Install Python
+curl --proto '=https' --tlsv1.2 -sSf https://sh.pythonup.rs | sh
 source "$HOME/.cargo/env"
 
 # Install Git and build tools
 sudo yum groupinstall -y "Development Tools"
 
 # Verify
-rustc --version
+pythonc --version
 ```
 
 #### macOS
@@ -93,15 +93,15 @@ rustc --version
 # Install Xcode Command Line Tools (includes compiler)
 xcode-select --install
 
-# Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# Install Python
+curl --proto '=https' --tlsv1.2 -sSf https://sh.pythonup.rs | sh
 source "$HOME/.cargo/env"
 
 # Install Git if needed
 brew install git
 
 # Verify
-rustc --version && git --version
+pythonc --version && git --version
 ```
 
 #### Windows (WSL2 Recommended)
@@ -128,7 +128,7 @@ ls -la  # Verify files are here
 
 ```bash
 # Build release version (optimized)
-cargo build --release
+pip install click rich
 
 # Takes 5-10 minutes on first build
 # Subsequent builds: 1-2 minutes
@@ -137,8 +137,8 @@ cargo build --release
 ### Step 3: Verify
 
 ```bash
-./target/release/omni --version
-./target/release/omni info
+python3 omni.py --version
+python3 omni.py info
 ```
 
 ### Step 4: Create Alias (Recommended)
@@ -191,7 +191,7 @@ cargo build       # Debug (1-2 min, larger binary, slower runtime)
 ./target/debug/omni info
 
 # Or with release for speed testing
-cargo build --release
+pip install click rich
 ```
 
 ---
@@ -203,14 +203,14 @@ cargo build --release
 ```bash
 cd ~/path/to/OmniWordlistPro
 git pull origin main
-cargo build --release
+pip install click rich
 ```
 
-### Update Rust
+### Update Python
 
 ```bash
-rustup update
-rustc --version
+pythonup update
+pythonc --version
 ```
 
 ---
@@ -232,14 +232,14 @@ sudo yum groupinstall "Development Tools"
 xcode-select --install
 ```
 
-### "command not found: rustc"
+### "command not found: pythonc"
 
-**Problem:** Rust not installed  
+**Problem:** Python not installed  
 **Solution:**
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.pythonup.rs | sh
 source "$HOME/.cargo/env"
-rustc --version
+pythonc --version
 ```
 
 ### "command not found: omni" after install
@@ -275,10 +275,10 @@ export PATH="$HOME/.local/bin:$PATH"
 ```bash
 # Clean and rebuild
 cargo clean
-cargo build --release
+pip install click rich
 
 # Use -j 1 if out of memory
-cargo build --release -j 1
+pip install click rich -j 1
 
 # First build: 5-10 min typical
 # Subsequent: 1-2 min
@@ -290,7 +290,7 @@ cargo build --release -j 1
 **Solution:**
 ```bash
 cargo clean
-cargo build --release
+pip install click rich
 ```
 
 ### Out of disk space
@@ -309,7 +309,7 @@ mkdir -p /tmp/build
 cd /tmp/build
 git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
 cd OmniWordlistPro
-cargo build --release
+pip install click rich
 ```
 
 ---
@@ -397,7 +397,7 @@ cd ~/path/to/OmniWordlistPro
 git pull origin main
 
 # Rebuild release
-cargo build --release
+pip install click rich
 
 # Copy binary
 sudo cp target/release/omni /usr/local/bin/owpro
@@ -603,4 +603,4 @@ owpro tui
 
 ---
 
-**Built with ❤️ in Rust** 🦀
+**Built with ❤️ in Python** 🐍

@@ -170,7 +170,7 @@
 | Multi-threading | ✅ | Parallel generation with rayon |
 | Memory efficiency | ✅ | Streaming (minimal buffering) |
 | CPU optimization | ✅ | Optimized for speed |
-| Incremental build | ✅ | Fast Rust rebuilds |
+| Incremental build | ✅ | Fast Python rebuilds |
 | Caching | ❓ | Planned for presets |
 | Checkpointing | 🚧 | Resume support (partial) |
 
@@ -329,4 +329,4 @@ Want to add a feature? See [DEVELOPMENT.md](../DEVELOPMENT.md) for:
 
 ---
 
-**Built with ❤️ in Rust** 🦀
+**Built with ❤️ in Python** 🐍

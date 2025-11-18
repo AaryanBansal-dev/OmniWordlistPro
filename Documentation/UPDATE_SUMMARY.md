@@ -98,7 +98,7 @@ OmniWordlistPro/
 ├── INSTALLATION.md             # Original detailed installation (now superseded by INSTALL.md)
 ├── install.sh                  # Global installation script
 ├── quick-install.sh            # Developer quick setup script
-└── Cargo.toml                  # Project manifest
+└── setup.py                  # Project manifest
 ```
 
 ---
@@ -121,7 +121,7 @@ cd OmniWordlistPro
 ```bash
 git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
 cd OmniWordlistPro
-cargo build --release
+python3 omni.py
 sudo cp target/release/omni /usr/local/bin/owpro
 ```
 
@@ -147,7 +147,7 @@ curl -fsSL https://raw.githubusercontent.com/AaryanBansal-dev/OmniWordlistPro/ma
 ```
 
 This:
-- ✅ Automatically detects and installs Rust (if needed)
+- ✅ Automatically detects and installs Python (if needed)
 - ✅ Clones the repository
 - ✅ Builds the release binary
 - ✅ Installs globally as `owpro`
