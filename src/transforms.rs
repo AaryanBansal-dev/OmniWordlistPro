@@ -59,6 +59,94 @@ lazy_static! {
         m.insert('c', vec!["ć", "č", "ç", "ĉ"]);
         m
     };
+
+    // NEW: QWERTZ keyboard layout (German/Czech/Hungarian)
+    static ref KEYBOARD_QWERTZ_MAP: HashMap<char, Vec<&'static str>> = {
+        let mut m = HashMap::new();
+        m.insert('z', vec!["y", "t", "u", "h", "n"]);
+        m.insert('y', vec!["z", "x", "c", "v", "b"]);
+        m.insert('a', vec!["q", "s"]);
+        m.insert('e', vec!["r", "w", "d"]);
+        m
+    };
+
+    // NEW: AZERTY keyboard layout (French/Belgian)
+    static ref KEYBOARD_AZERTY_MAP: HashMap<char, Vec<&'static str>> = {
+        let mut m = HashMap::new();
+        m.insert('q', vec!["a", "z", "s"]);
+        m.insert('w', vec!["z", "x", "s", "q"]);
+        m.insert('a', vec!["q", "z"]);
+        m.insert('z', vec!["a", "e", "r", "t"]);
+        m.insert('m', vec!["l", "k", ",", ";"]);
+        m
+    };
+
+    // NEW: Common password substitution patterns
+    static ref PASSWORD_PATTERN_MAP: HashMap<&'static str, Vec<&'static str>> = {
+        let mut m = HashMap::new();
+        m.insert("password", vec!["p@ssw0rd", "P@ssw0rd", "passw0rd", "p4ssw0rd"]);
+        m.insert("admin", vec!["@dmin", "4dmin", "adm1n", "@dm1n"]);
+        m.insert("login", vec!["l0gin", "log1n", "l0g1n", "l0g!n"]);
+        m.insert("welcome", vec!["w3lcome", "welc0me", "w3lc0me"]);
+        m.insert("user", vec!["us3r", "u$er", "us3r"]);
+        m.insert("test", vec!["t3st", "te$t", "t3$t"]);
+        m
+    };
+
+    // NEW: Year/date patterns for common password suffixes
+    static ref DATE_PATTERNS: Vec<String> = {
+        let mut v = Vec::new();
+        for year in 2020..=2025 {
+            v.push(year.to_string());
+            v.push(format!("{:02}", year % 100)); // last 2 digits
+        }
+        for month in 1..=12 {
+            v.push(format!("{:02}", month));
+        }
+        for day in 1..=31 {
+            v.push(format!("{:02}", day));
+        }
+        v
+    };
+
+    // NEW: Season and month names
+    static ref SEASON_PATTERNS: Vec<&'static str> = vec![
+        "spring", "summer", "autumn", "fall", "winter",
+        "january", "february", "march", "april", "may", "june",
+        "july", "august", "september", "october", "november", "december",
+        "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"
+    ];
+
+    // NEW: Extended leet speak mapping with more variations
+    static ref LEET_EXTREME_MAP: HashMap<char, Vec<&'static str>> = {
+        let mut m = HashMap::new();
+        m.insert('a', vec!["4", "@", "^", "/\\", "/-\\", "∆"]);
+        m.insert('e', vec!["3", "€", "&", "£", "ε"]);
+        m.insert('i', vec!["1", "!", "|", "¡", "í", "ï"]);
+        m.insert('o', vec!["0", "()", "[]", "ø", "Ω"]);
+        m.insert('s', vec!["5", "$", "z", "§", "ß"]);
+        m.insert('t', vec!["7", "+", "†", "‡"]);
+        m.insert('l', vec!["1", "|", "£", "¦"]);
+        m.insert('g', vec!["9", "&", "6", "¶"]);
+        m.insert('z', vec!["2", "~", "ƶ"]);
+        m.insert('b', vec!["8", "|3", "ß", "฿"]);
+        m.insert('h', vec!["#", "|-|", "}{", "ħ"]);
+        m.insert('n', vec!["|\\|", "^/", "ñ", "И"]);
+        m.insert('m', vec!["|v|", "|\\/|", "^^", "м"]);
+        m.insert('w', vec!["\\/\\/", "vv", "ω"]);
+        m.insert('v', vec!["\\/", "√"]);
+        m.insert('k', vec!["|<", "|(", "κ"]);
+        m.insert('x', vec!["><", "}{", "×"]);
+        m.insert('c', vec!["(", "[", "<", "©", "¢"]);
+        m.insert('u', vec!["(_)", "|_|", "µ"]);
+        m.insert('d', vec!["|)", "|>", "∂"]);
+        m.insert('f', vec!["|=", "ph", "ƒ"]);
+        m.insert('p', vec!["|>", "|*", "þ"]);
+        m.insert('q', vec!["9", "kw", "¶"]);
+        m.insert('r', vec!["|2", "|?", "®"]);
+        m.insert('y', vec!["j", "`/", "ý", "ÿ"]);
+        m
+    };
 }
 
 #[derive(Debug, Clone)]
@@ -66,21 +154,43 @@ pub enum Transform {
     LeetBasic,
     LeetFull,
     LeetRandom,
+    // NEW: Extreme leet speak with extended character mappings
+    LeetExtreme,
     Reverse,
     ToggleCase,
     UpperCase,
     LowerCase,
     TitleCase,
     Capitalize,
+    // NEW: Alternating case variations
+    AlternatingCase,
+    CamelCase,
+    SnakeCase,
+    KebabCase,
     AppendNumbers(usize),
     PrependNumbers(usize),
     AppendSymbols(usize),
     PrependSymbols(usize),
+    // NEW: Date and time based transforms
+    AppendYear,
+    AppendCurrentYear,
+    AppendDate,
+    AppendSeason,
+    // NEW: Common password patterns
+    PasswordPattern,
+    CommonSubstitution,
     Homoglyph,
     HomoglyphRandom,
     HomoglyphFull,
     KeyboardShift,
+    // NEW: Different keyboard layouts
+    KeyboardQwertz,
+    KeyboardAzerty,
+    // NEW: Phonetic algorithm transforms
     PhoneticSubstitution,
+    PhoneticMetaphone,
+    PhoneticDoubleMetaphone,
+    PhoneticSoundex,
     TransliterationLatin,
     DiacriticExpand,
     DiacriticStrip,
@@ -90,9 +200,30 @@ pub enum Transform {
     SingularizeEnd,
     DoubleLast,
     TripleLast,
+    // NEW: Advanced character manipulations
+    DoubleFirst,
+    RemoveVowels,
+    RemoveConsonants,
+    OnlyVowels,
+    OnlyConsonants,
+    // NEW: Word manipulations
     ReverseWords,
+    ShuffleWords,
+    SortWords,
     InterleaveSpaces,
     RandomInsertSpaces,
+    // NEW: Encoding transforms
+    Base64Encode,
+    HexEncode,
+    UrlEncode,
+    HtmlEncode,
+    // NEW: Repeat patterns
+    RepeatString(usize),
+    MirrorString,
+    // NEW: ROT ciphers
+    Rot13,
+    Rot47,
+    RotCustom(usize),
     Custom(String),
 }
 
