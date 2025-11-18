@@ -36,8 +36,8 @@ owpro list-presets
 
 ### 📚 Full Documentation
 
-- **[INSTALL.md](INSTALL.md)** — Complete installation & troubleshooting guide
-- **[QUICK_START.md](QUICK_START.md)** — CLI command reference
+- **[INSTALL.md](Documentation/INSTALL.md)** — Complete installation & troubleshooting guide
+- **[QUICK_START.md](Documentation/QUICK_START.md)** — CLI command reference
 - **[DEVELOPMENT.md](DEVELOPMENT.md)** — Development setup & contribution guide
 
 ---
@@ -221,19 +221,16 @@ OmniWordlistPro/
 │   ├── presets.rs           # Preset management
 │   └── ui.rs                # TUI interface (Ratatui)
 │
+├── Documentation/           # All documentation files
+│   ├── FEATURES.md          # Feature list & status
+│   ├── INSTALL.md           # Installation guide
+│   ├── QUICK_START.md       # Command reference
+│   └── ...
+│
 ├── Cargo.toml               # Dependencies & metadata
 ├── Cargo.lock               # Dependency lock file
 ├── README.md                # This file
-├── INSTALL.md               # Installation guide
-├── QUICK_START.md           # Command reference
-├── DEVELOPMENT.md           # Development guide
-├── FEATURES.md              # Feature list & status
-└── presets/                 # Built-in preset configurations
-    ├── pentest_default.json
-    ├── meme_humor_pack.json
-    ├── api_dev_wordlist.json
-    ├── social_media_usernames.json
-    └── pattern_basic.json
+└── DEVELOPMENT.md           # Development guide
 ```
 
 ### Core Modules Explained
@@ -592,12 +589,6 @@ See **[DEVELOPMENT.md](DEVELOPMENT.md)** for detailed contribution guidelines.
 
 ## License
 
-MIT License — See LICENSE file
-
----
-
-## License
-
 MIT License — See LICENSE file for details
 
 ---
@@ -605,16 +596,16 @@ MIT License — See LICENSE file for details
 ## Support
 
 ### Getting Help
-- **Documentation:** See README.md, INSTALL.md, QUICK_START.md
+- **Documentation:** See README.md, [INSTALL.md](Documentation/INSTALL.md), [QUICK_START.md](Documentation/QUICK_START.md)
 - **Issues:** Report bugs on [GitHub Issues](https://github.com/AaryanBansal-dev/OmniWordlistPro/issues)
 - **Discussions:** Join discussions on [GitHub Discussions](https://github.com/AaryanBansal-dev/OmniWordlistPro/discussions)
 
 ### Documentation Files
 - **README.md** ← You are here
-- **INSTALL.md** — Installation & troubleshooting
-- **QUICK_START.md** — Command quick reference
-- **DEVELOPMENT.md** — For developers & contributors
-- **FEATURES.md** — Feature list & implementation status
+- **[INSTALL.md](Documentation/INSTALL.md)** — Installation & troubleshooting
+- **[QUICK_START.md](Documentation/QUICK_START.md)** — Command quick reference
+- **[DEVELOPMENT.md](DEVELOPMENT.md)** — For developers & contributors
+- **[FEATURES.md](Documentation/FEATURES.md)** — Feature list & implementation status
 
 ### Quick Links
 - **Repository:** https://github.com/AaryanBansal-dev/OmniWordlistPro

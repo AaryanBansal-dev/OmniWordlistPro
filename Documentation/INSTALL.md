@@ -590,8 +590,8 @@ owpro tui
 
 1. ✅ Installation complete
 2. 📖 Read [QUICK_START.md](QUICK_START.md) for commands
-3. 🚀 Read [README.md](README.md) for features
-4. 💻 See [DEVELOPMENT.md](DEVELOPMENT.md) to contribute
+3. 🚀 Read [README.md](../README.md) for features
+4. 💻 See [DEVELOPMENT.md](../DEVELOPMENT.md) to contribute
 
 ---
 

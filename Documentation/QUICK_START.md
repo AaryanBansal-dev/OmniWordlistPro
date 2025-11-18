@@ -498,9 +498,9 @@ omni run --charset abc --min 3 --max 5 -o output.txt
 
 ## See Also
 
-- **[README.md](README.md)** — Full documentation & features
+- **[README.md](../README.md)** — Full documentation & features
 - **[INSTALL.md](INSTALL.md)** — Installation guide
-- **[DEVELOPMENT.md](DEVELOPMENT.md)** — Development guide
+- **[DEVELOPMENT.md](../DEVELOPMENT.md)** — Development guide
 - **[FEATURES.md](FEATURES.md)** — Feature list & status
 
 ---
