@@ -61,6 +61,38 @@ enum Commands {
         #[arg(long)]
         permutations: bool,
 
+        /// Start string (resume from this point)
+        #[arg(short, long)]
+        start: Option<String>,
+
+        /// End string (stop at this point)
+        #[arg(short, long)]
+        end: Option<String>,
+
+        /// Literal characters (don't expand in pattern)
+        #[arg(short, long)]
+        literal: Option<String>,
+
+        /// Invert output (first char changes most frequently)
+        #[arg(short, long)]
+        invert: bool,
+
+        /// Duplicate suppression (e.g., "2@" = max 2 adjacent @)
+        #[arg(short, long)]
+        duplicate_limit: Option<String>,
+
+        /// Show status (count and bytes) before generation
+        #[arg(long)]
+        status: bool,
+
+        /// Split output by size in bytes
+        #[arg(long)]
+        split_bytes: Option<u64>,
+
+        /// Split output by number of lines
+        #[arg(long)]
+        split_lines: Option<u64>,
+
         /// Config file
         #[arg(long)]
         config: Option<PathBuf>,
@@ -178,6 +210,14 @@ fn main() -> omniwordlist::Result<()> {
             prefix,
             suffix,
             permutations,
+            start,
+            end,
+            literal,
+            invert,
+            duplicate_limit,
+            status,
+            split_bytes,
+            split_lines,
             config: config_path,
             preset,
         } => {
@@ -220,6 +260,30 @@ fn main() -> omniwordlist::Result<()> {
             }
             if permutations {
                 config.permutations_only = true;
+            }
+            if let Some(s) = start {
+                config.start_string = Some(s);
+            }
+            if let Some(e) = end {
+                config.end_string = Some(e);
+            }
+            if let Some(l) = literal {
+                config.literal_chars = Some(l);
+            }
+            if invert {
+                config.invert = true;
+            }
+            if let Some(d) = duplicate_limit {
+                config.duplicate_limit = Some(d);
+            }
+            if status {
+                config.show_status = true;
+            }
+            if let Some(sb) = split_bytes {
+                config.split_by_bytes = Some(sb);
+            }
+            if let Some(sl) = split_lines {
+                config.split_by_lines = Some(sl);
             }
 
             config.verbose = cli.verbose;
@@ -301,22 +365,40 @@ fn main() -> omniwordlist::Result<()> {
 fn run_generation(config: Config) -> omniwordlist::Result<()> {
     config.validate()?;
 
+    let generator = Generator::new(config.clone())?;
+
+    // Show status if requested
+    if config.show_status {
+        let charset = if let Some(c) = &config.charset {
+            c.clone()
+        } else {
+            omniwordlist::charset::CharsetBuilder::new()
+                .add_charset("lower")?
+                .build()
+        };
+        generator.show_status_info(&charset)?;
+    }
+
     if config.verbose {
         println!("📝 Configuration:");
         println!("  Min Length: {}", config.min_length);
         println!("  Max Length: {}", config.max_length);
         if let Some(charset) = &config.charset {
-            println!("  Charset: {} (size: {})", charset, charset.len());
+            println!("  Charset: {} (size: {})", charset, charset.chars().count());
         }
         if let Some(pattern) = &config.pattern {
             println!("  Pattern: {}", pattern);
+        }
+        if config.invert {
+            println!("  Invert: enabled");
+        }
+        if let Some(dup) = &config.duplicate_limit {
+            println!("  Duplicate suppression: {}", dup);
         }
         println!("  Transforms: {:?}", config.transforms);
         println!("  Dedupe: {}", config.dedupe);
         println!();
     }
-
-    let generator = Generator::new(config.clone())?;
 
     if config.verbose {
         println!("🔧 Generating...");
