@@ -3,14 +3,14 @@
 **Version:** 1.1.0  
 **Author:** Aaryan Bansal  
 **Language:** 100% Pure Python 🐍  
-**Original Rust Version:** [https://github.com/AaryanBansal-dev/OmniWordlistPro](https://github.com/AaryanBansal-dev/OmniWordlistPro)  
+**Original Python Version:** [https://github.com/AaryanBansal-dev/OmniWordlistPro](https://github.com/AaryanBansal-dev/OmniWordlistPro)  
 **Status:** ✅ Actively Maintained  
 
 ---
 
 ## Overview
 
-This is a **complete Python rewrite** of OmniWordlist Pro, maintaining full functionality from the original Rust implementation. The Python version provides an accessible, easy-to-install alternative while preserving all the enterprise features of the original.
+This is a **complete Python rewrite** of OmniWordlist Pro, maintaining full functionality from the original Python implementation. The Python version provides an accessible, easy-to-install alternative while preserving all the enterprise features of the original.
 
 **OmniWordlist Pro** is a **production-ready, ultra-high-performance wordlist generation platform**. It combines:
 
@@ -277,7 +277,7 @@ OmniWordlistPro/
 │
 ├── setup.py                # Package setup
 ├── requirements.txt        # Python dependencies
-├── README.md               # Original Rust README
+├── README.md               # Original Python README
 └── README_PYTHON.md        # This file
 ```
 
@@ -316,14 +316,14 @@ Contributions are welcome! To get started:
 
 ## Performance Comparison
 
-| Feature | Python Version | Rust Version |
+| Feature | Python Version | Python Version |
 |---------|---------------|--------------|
-| Installation | ✅ Easy (pip) | ⚠️ Requires Rust toolchain |
+| Installation | ✅ Easy (pip) | ⚠️ Requires Python toolchain |
 | Startup time | Fast | Very Fast |
 | Generation speed | Good | Excellent |
 | Memory usage | Low | Very Low |
 | Cross-platform | ✅ Excellent | ✅ Excellent |
-| Extensibility | ✅ Easy (Python) | Harder (Rust) |
+| Extensibility | ✅ Easy (Python) | Harder (Python) |
 
 **When to use Python version:**
 - Quick installation needed
@@ -331,7 +331,7 @@ Contributions are welcome! To get started:
 - Good enough performance
 - Python-friendly environment
 
-**When to use Rust version:**
+**When to use Python version:**
 - Maximum performance needed
 - Very large wordlists (billions of tokens)
 - Production deployments
@@ -396,10 +396,10 @@ MIT License — See LICENSE file for details
 
 - **Repository:** https://github.com/AaryanBansal-dev/OmniWordlistPro
 - **Issues:** https://github.com/AaryanBansal-dev/OmniWordlistPro/issues
-- **Original Rust Version:** See main README.md
+- **Original Python Version:** See main README.md
 
 ---
 
 ## Acknowledgments
 
-This Python implementation maintains the architecture and feature set of the original Rust version while making the tool more accessible to the Python community.
+This Python implementation maintains the architecture and feature set of the original Python version while making the tool more accessible to the Python community.

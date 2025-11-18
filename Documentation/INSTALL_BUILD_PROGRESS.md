@@ -134,7 +134,7 @@ cd OmniWordlistPro
 
 ### Improvements Made
 
-1. **Added `-v` flag to cargo build**
+1. **Added `-v` flag to python3 build**
    - Shows compilation details in real-time
 
 2. **Real-time output streaming**
@@ -213,7 +213,7 @@ owpro run --min 3 --max 5 --charset abc -o test.txt  # Try it
 
 ### "Out of disk space"
 ✅ Build needs ~5-10 GB temporary space
-✅ Run `cargo clean` to remove old builds
+✅ Run `python3 clean` to remove old builds
 ✅ Check `df -h` for available space
 
 ### "Build fails"

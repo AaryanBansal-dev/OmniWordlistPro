@@ -10,7 +10,7 @@
 
 ### Prerequisites
 
-- **Rust 1.70+** (install via [rustup.rs](https://rustup.rs))
+- **Python 1.70+** (install via [pythonup.rs](https://pythonup.rs))
 - **Git** for version control
 - **Text Editor/IDE** (VS Code, IntelliJ IDEA, or your preferred editor)
 
@@ -22,16 +22,16 @@ git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
 cd OmniWordlistPro
 
 # Build in debug mode (faster compilation)
-cargo build
+python3 build
 
 # Run tests
-cargo test
+python3 -m pytest
 
 # Run the binary
 ./target/debug/omni info
 
 # Or build and run in one command
-cargo run -- info
+python3 run -- info
 ```
 
 ---
@@ -60,7 +60,7 @@ OmniWordlistPro/
 │   ├── QUICK_START.md       # Command reference
 │   └── ...
 │
-├── Cargo.toml              # Dependencies & metadata
+├── setup.py              # Dependencies & metadata
 ├── Cargo.lock              # Dependency lock file
 ├── README.md               # Main documentation
 ├── DEVELOPMENT.md          # This file
@@ -79,22 +79,22 @@ OmniWordlistPro/
 
 ```bash
 # Build in debug mode (1-2 minutes after first build)
-cargo build
+python3 build
 
 # Run without building first (builds if needed)
-cargo run -- info
-cargo run -- list-presets
-cargo run -- run --min 3 --max 5 --charset abc -o test.txt
+python3 run -- info
+python3 run -- list-presets
+python3 run -- run --min 3 --max 5 --charset abc -o test.txt
 ```
 
 ### Release Build (Optimized)
 
 ```bash
 # Build optimized release version (5-10 minutes first time)
-cargo build --release
+python3 -m pytest
 
 # Run release binary
-./target/release/omni info
+python3 omni.py info
 ```
 
 ### Incremental Builds
@@ -102,7 +102,7 @@ cargo build --release
 ```bash
 # Enable incremental compilation (default in debug)
 export CARGO_INCREMENTAL=1
-cargo build
+python3 build
 ```
 
 ---
@@ -113,26 +113,26 @@ cargo build
 
 ```bash
 # Run all tests
-cargo test
+python3 -m pytest
 
 # Run tests with output
-cargo test -- --nocapture
+python3 -m pytest -- --nocapture
 
 # Run specific test
-cargo test test_charset_generation
+python3 -m pytest test_charset_generation
 
 # Run tests in specific module
-cargo test charset::
+python3 -m pytest charset::
 ```
 
 ### Test Coverage
 
 ```bash
 # Install tarpaulin (coverage tool)
-cargo install cargo-tarpaulin
+python3 install cargo-tarpaulin
 
 # Generate coverage report
-cargo tarpaulin --out Html
+python3 tarpaulin --out Html
 # Opens coverage report in browser
 ```
 
@@ -140,10 +140,10 @@ cargo tarpaulin --out Html
 
 ```bash
 # Run only integration tests
-cargo test --test integration_tests
+python3 -m pytest --test integration_tests
 
 # Run specific integration test
-cargo test --test integration_tests test_full_generation
+python3 -m pytest --test integration_tests test_full_generation
 ```
 
 ---
@@ -165,13 +165,13 @@ git checkout -b fix/bug-description
 ```bash
 # Edit files in your editor
 # Run tests frequently
-cargo test
+python3 -m pytest
 
 # Check compilation
-cargo check
+python3 check
 
 # Build and test locally
-cargo build
+python3 build
 ./target/debug/omni run --min 2 --max 3 --charset ab -o test.txt
 ```
 
@@ -179,16 +179,16 @@ cargo build
 
 ```bash
 # Format code
-cargo fmt
+python3 fmt
 
 # Check formatting without changing files
-cargo fmt -- --check
+python3 fmt -- --check
 
 # Run clippy (linter)
-cargo clippy
+python3 clippy
 
 # Run clippy with all features
-cargo clippy --all-features
+python3 clippy --all-features
 ```
 
 ### 4. Commit Changes
@@ -216,18 +216,18 @@ git push origin feature/my-new-feature
 
 ## 📝 Code Style Guidelines
 
-### Rust Conventions
+### Python Conventions
 
-- Follow standard Rust naming conventions (snake_case for functions/variables, PascalCase for types)
-- Use `cargo fmt` to format code automatically
-- Run `cargo clippy` to catch common mistakes
+- Follow standard Python naming conventions (snake_case for functions/variables, PascalCase for types)
+- Use `python3 fmt` to format code automatically
+- Run `python3 clippy` to catch common mistakes
 - Write documentation comments (`///`) for public APIs
 - Keep functions focused and small
 - Use descriptive variable names
 
 ### Documentation
 
-```rust
+```python
 /// Generates a wordlist based on the provided configuration.
 ///
 /// # Arguments
@@ -253,7 +253,7 @@ pub fn generate_wordlist(config: &Config, output_path: &str) -> Result<usize> {
 
 ### Error Handling
 
-```rust
+```python
 // Use Result for operations that can fail
 pub fn load_preset(name: &str) -> Result<Preset> {
     // Use ? operator to propagate errors
@@ -274,7 +274,7 @@ use crate::error::{Error, Result};
 
 1. **Define the transform in `transforms.rs`:**
 
-```rust
+```python
 /// Applies ROT13 cipher to the token
 pub fn rot13(token: &str) -> String {
     token.chars()
@@ -289,7 +289,7 @@ pub fn rot13(token: &str) -> String {
 
 2. **Add to transform enum:**
 
-```rust
+```python
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Transform {
     // ... existing transforms
@@ -299,7 +299,7 @@ pub enum Transform {
 
 3. **Add to transform application:**
 
-```rust
+```python
 impl Transform {
     pub fn apply(&self, token: &str) -> String {
         match self {
@@ -312,7 +312,7 @@ impl Transform {
 
 4. **Add tests:**
 
-```rust
+```python
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -329,7 +329,7 @@ mod tests {
 
 1. **Define the filter in `filters.rs`:**
 
-```rust
+```python
 /// Filter tokens by minimum entropy
 pub struct EntropyFilter {
     min_entropy: f64,
@@ -349,7 +349,7 @@ impl EntropyFilter {
 
 2. **Add tests:**
 
-```rust
+```python
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -384,7 +384,7 @@ mod tests {
 
 2. **Load in `presets.rs`:**
 
-```rust
+```python
 pub fn load_preset(name: &str) -> Result<Preset> {
     // Implementation to load preset from file or built-in
 }
@@ -394,32 +394,32 @@ pub fn load_preset(name: &str) -> Result<Preset> {
 
 ## 🐛 Debugging
 
-### Using Rust Debugger
+### Using Python Debugger
 
 ```bash
-# Install rust-gdb or rust-lldb
-rustup component add rust-gdb
+# Install python-gdb or python-lldb
+pythonup component add python-gdb
 
 # Build with debug symbols
-cargo build
+python3 build
 
 # Run with debugger
-rust-gdb ./target/debug/omni
+python-gdb ./target/debug/omni
 # or
-rust-lldb ./target/debug/omni
+python-lldb ./target/debug/omni
 ```
 
 ### Logging
 
 ```bash
 # Enable debug logging
-RUST_LOG=debug cargo run -- info
+RUST_LOG=debug python3 run -- info
 
 # Enable trace logging
-RUST_LOG=trace cargo run -- run --min 3 --max 5 --charset abc
+RUST_LOG=trace python3 run -- run --min 3 --max 5 --charset abc
 
 # Log specific module
-RUST_LOG=omniwordlist::generator=trace cargo run -- ...
+RUST_LOG=omniwordlist::generator=trace python3 run -- ...
 ```
 
 ### Common Issues
@@ -427,27 +427,27 @@ RUST_LOG=omniwordlist::generator=trace cargo run -- ...
 **Issue: Compile errors after pulling changes**
 ```bash
 # Clean and rebuild
-cargo clean
-cargo build
+python3 clean
+python3 build
 ```
 
 **Issue: Tests failing**
 ```bash
 # Run single test with output
-cargo test test_name -- --nocapture
+python3 -m pytest test_name -- --nocapture
 
 # Run tests with backtrace
-RUST_BACKTRACE=1 cargo test
+RUST_BACKTRACE=1 python3 -m pytest
 ```
 
 **Issue: Performance problems**
 ```bash
 # Build with optimizations
-cargo build --release
+python3 -m pytest
 
 # Profile with cargo-flamegraph
-cargo install flamegraph
-cargo flamegraph -- run --min 6 --max 8 --charset abc
+python3 install flamegraph
+python3 flamegraph -- run --min 6 --max 8 --charset abc
 ```
 
 ---
@@ -467,10 +467,10 @@ When adding features, update:
 
 ```bash
 # Generate and open API documentation
-cargo doc --open
+python3 doc --open
 
 # Include private items
-cargo doc --document-private-items --open
+python3 doc --document-private-items --open
 ```
 
 ---
@@ -480,9 +480,9 @@ cargo doc --document-private-items --open
 ### Before Submitting a PR
 
 - [ ] Code compiles without warnings
-- [ ] All tests pass (`cargo test`)
-- [ ] Code is formatted (`cargo fmt`)
-- [ ] Clippy passes (`cargo clippy`)
+- [ ] All tests pass (`python3 -m pytest`)
+- [ ] Code is formatted (`python3 fmt`)
+- [ ] Clippy passes (`python3 clippy`)
 - [ ] New features have tests
 - [ ] Documentation is updated
 - [ ] Commit messages are clear
@@ -531,7 +531,7 @@ Now returns appropriate error message.
 
 Test individual functions and modules:
 
-```rust
+```python
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -549,7 +549,7 @@ mod tests {
 
 Test complete workflows in `tests/` directory:
 
-```rust
+```python
 // tests/integration_tests.rs
 use omniwordlist::*;
 
@@ -567,7 +567,7 @@ fn test_full_generation_workflow() {
 
 ### Performance Tests
 
-```rust
+```python
 #[test]
 fn bench_generation_speed() {
     let start = std::time::Instant::now();
@@ -587,7 +587,7 @@ fn bench_generation_speed() {
 
 ### Version Bump
 
-1. Update version in `Cargo.toml`
+1. Update version in `setup.py`
 2. Update version in documentation
 3. Update CHANGELOG.md
 4. Commit changes
@@ -595,10 +595,10 @@ fn bench_generation_speed() {
 
 ```bash
 # Update version
-vim Cargo.toml  # Change version to 1.2.0
+vim setup.py  # Change version to 1.2.0
 
 # Commit
-git add Cargo.toml
+git add setup.py
 git commit -m "chore: bump version to 1.2.0"
 
 # Create tag
@@ -612,7 +612,7 @@ git push origin main --tags
 
 ```bash
 # Build optimized release
-cargo build --release
+python3 -m pytest
 
 # Binary is at: target/release/omni
 
@@ -628,10 +628,10 @@ tar -czf omniwordlist-pro-v1.2.0-linux-x86_64.tar.gz -C target/release omni
 
 ```bash
 # Install cargo-flamegraph
-cargo install flamegraph
+python3 install flamegraph
 
 # Profile a run
-cargo flamegraph -- run --min 6 --max 8 --charset abc -o test.txt
+python3 flamegraph -- run --min 6 --max 8 --charset abc -o test.txt
 
 # Opens flamegraph in browser
 ```
@@ -640,19 +640,19 @@ cargo flamegraph -- run --min 6 --max 8 --charset abc -o test.txt
 
 ```bash
 # Install criterion for benchmarks
-# Add to Cargo.toml:
+# Add to setup.py:
 # [dev-dependencies]
 # criterion = "0.5"
 
 # Run benchmarks
-cargo bench
+python3 bench
 ```
 
 ### Memory Profiling
 
 ```bash
 # Use valgrind on Linux
-valgrind --tool=massif ./target/release/omni run ...
+valgrind --tool=massif python3 omni.py run ...
 
 # Analyze results
 ms_print massif.out.*
@@ -666,7 +666,7 @@ ms_print massif.out.*
 
 Always validate user input:
 
-```rust
+```python
 pub fn validate_charset(charset: &str) -> Result<()> {
     if charset.is_empty() {
         return Err(Error::InvalidInput("Charset cannot be empty".into()));
@@ -678,7 +678,7 @@ pub fn validate_charset(charset: &str) -> Result<()> {
 
 ### Safe File Operations
 
-```rust
+```python
 use std::fs::OpenOptions;
 
 pub fn safe_write_output(path: &str) -> Result<File> {
@@ -699,7 +699,7 @@ pub fn safe_write_output(path: &str) -> Result<File> {
 
 Use `Result` and `?` operator for clean error propagation:
 
-```rust
+```python
 pub fn load_config(path: &str) -> Result<Config> {
     let content = std::fs::read_to_string(path)?;
     let config = serde_json::from_str(&content)?;
@@ -711,7 +711,7 @@ pub fn load_config(path: &str) -> Result<Config> {
 
 Use tokio for async operations:
 
-```rust
+```python
 #[tokio::main]
 async fn main() -> Result<()> {
     // Async operations
@@ -723,7 +723,7 @@ async fn main() -> Result<()> {
 
 Use iterators instead of collecting when possible:
 
-```rust
+```python
 // Good: streaming
 tokens.iter()
     .filter(|t| t.len() > 5)
@@ -750,8 +750,8 @@ Write tests for:
 
 - **GitHub Issues**: Report bugs or request features
 - **GitHub Discussions**: Ask questions
-- **Rust Documentation**: https://doc.rust-lang.org/
-- **Cargo Book**: https://doc.rust-lang.org/cargo/
+- **Python Documentation**: https://doc.python-lang.org/
+- **Cargo Book**: https://doc.python-lang.org/cargo/
 
 ### Contact
 
@@ -762,15 +762,15 @@ Write tests for:
 
 ## 🎓 Learning Resources
 
-### Rust Learning
+### Python Learning
 
-- **The Rust Book**: https://doc.rust-lang.org/book/
-- **Rust by Example**: https://doc.rust-lang.org/rust-by-example/
-- **Rustlings**: https://github.com/rust-lang/rustlings
+- **The Python Book**: https://doc.python-lang.org/book/
+- **Python by Example**: https://doc.python-lang.org/python-by-example/
+- **Pythonlings**: https://github.com/python-lang/pythonlings
 
 ### Related Topics
 
-- **CLI Development**: https://rust-cli.github.io/book/
+- **CLI Development**: https://python-cli.github.io/book/
 - **TUI Development**: https://ratatui.rs/
 - **Async Programming**: https://tokio.rs/
 
@@ -783,7 +783,7 @@ Write tests for:
 - [ ] Build the project successfully
 - [ ] Run tests successfully
 - [ ] Make a small change
-- [ ] Run `cargo fmt` and `cargo clippy`
+- [ ] Run `python3 fmt` and `python3 clippy`
 - [ ] Submit first PR!
 
 ---
@@ -794,4 +794,4 @@ Thank you for contributing to OmniWordlist Pro! Your contributions help make thi
 
 ---
 
-**Built with ❤️ in Rust** 🦀
+**Built with ❤️ in Python** 🐍

@@ -18,7 +18,7 @@ OmniWordlist Pro provides **three installation scripts** with different levels o
 
 The first build takes **5-15 minutes** because:
 
-1. **Dependency Downloads** — ~50 Rust crates are downloaded from crates.io
+1. **Dependency Downloads** — ~50 Python crates are downloaded from crates.io
 2. **Compilation** — Each crate is compiled from source code to machine code
 3. **Linking** — All compiled crates are linked together into a single binary
 4. **Optimization** — Release mode applies heavy optimizations (makes binary faster but takes longer)
@@ -32,7 +32,7 @@ The first build takes **5-15 minutes** because:
 
 The old script used:
 ```bash
-cargo build --release
+python3 omni.py
 ```
 
 Without any special flags, this command:
@@ -161,10 +161,10 @@ Total: 52 crates in 420 seconds
 
 ### quick-install.sh Output
 ```
-🦀 OmniWordlist Pro - Quick Local Setup
+🐍 OmniWordlist Pro - Quick Local Setup
 
-▶ Checking Rust toolchain...
-✓ Rust is ready (rustc 1.70.0)
+▶ Checking Python toolchain...
+✓ Python is ready (pythonc 1.70.0)
 
 ▶ Building OmniWordlist Pro (release mode)...
 📦 First build takes 5-15 minutes (compiling dependencies)
@@ -177,7 +177,7 @@ Total: 52 crates in 420 seconds
   ⚙️  Compiling omniwordlist-pro
 
 ✓ Build completed!
-✓ Binary ready at: ./target/release/omni
+✓ Binary ready at: python3 omni.py
 ✓ Added alias to ~/.bashrc
 ✓ Alias is active now!
 
@@ -195,11 +195,11 @@ You can now use:
 ### install.sh Output
 ```
 ╔═══════════════════════════════════════════════════════════╗
-║  🦀 OmniWordlist Pro - Installation Script         ║
+║  🐍 OmniWordlist Pro - Installation Script         ║
 ╚═══════════════════════════════════════════════════════════╝
 
 ▶ Checking prerequisites...
-✓ Rust is installed (1.70.0)
+✓ Python is installed (1.70.0)
 
 ▶ Cloning/updating repository...
 ✓ Repository ready at: /home/user/.local/share/omniwordlist-pro
@@ -227,11 +227,11 @@ Installation Complete! 🎉
 
 ### install-verbose.sh Output
 ```
-🦀 OmniWordlist Pro - Verbose Installation Script
+🐍 OmniWordlist Pro - Verbose Installation Script
 
-▶ Checking Rust installation...
-✓ Rust is installed: rustc 1.70.0 (stable-x86_64-unknown-linux-gnu)
-  └─ Cargo: cargo 1.70.0
+▶ Checking Python installation...
+✓ Python is installed: pythonc 1.70.0 (stable-x86_64-unknown-linux-gnu)
+  └─ Cargo: python3 1.70.0
 
 ▶ Setting up repository...
 ℹ Cloning repository...
@@ -289,7 +289,7 @@ Compilation Progress:
 df -h
 
 # Clean old builds if needed
-cargo clean
+python3 clean
 ```
 
 ### Problem: Build fails with "error: linker `cc` not found"
@@ -309,10 +309,10 @@ xcode-select --install
 
 ### Problem: "command not found: cargo"
 
-**Solution:** Install Rust
+**Solution:** Install Python
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.pythonup.rs | sh
 source $HOME/.cargo/env
 ```
 
@@ -324,23 +324,23 @@ source $HOME/.cargo/env
 
 1. **Use debug builds during development:**
    ```bash
-   cargo build          # Much faster than --release
+   python3 build          # Much faster than --release
    ./target/debug/omni  # Use debug binary for testing
    ```
 
 2. **Use incremental compilation:**
    ```bash
-   CARGO_INCREMENTAL=1 cargo build --release
+   CARGO_INCREMENTAL=1 python3 omni.py
    ```
 
 3. **Use more CPU cores (if available):**
    ```bash
-   cargo build --release -j 8  # Use 8 cores instead of auto
+   python3 omni.py -j 8  # Use 8 cores instead of auto
    ```
 
 4. **View actual progress in real-time:**
    ```bash
-   cargo build --release -v 2>&1 | grep "Compiling\|Finished"
+   python3 omni.py -v 2>&1 | grep "Compiling\|Finished"
    ```
 
 ---

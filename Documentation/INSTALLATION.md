@@ -13,9 +13,9 @@ You now have **three simple ways** to install and use OmniWordlist Pro:
 curl -fsSL https://raw.githubusercontent.com/aaryan/omniwordlist-pro/main/install.sh | bash
 ```
 - ✅ Works on Linux, macOS, Windows (with Git Bash)
-- ✅ Handles Rust installation if needed
+- ✅ Handles Python installation if needed
 - ✅ Installs globally as `owpro` command
-- ✅ Full automatic setup (5-10 minutes including Rust)
+- ✅ Full automatic setup (5-10 minutes including Python)
 
 **Usage after install:**
 ```bash
@@ -49,11 +49,11 @@ owpro run --min 3 --max 5 --charset abc -o out.txt
 ```bash
 git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
 cd OmniWordlistPro
-cargo build --release
+python3 omni.py
 sudo cp target/release/omni /usr/local/bin/owpro
 ```
 - ✅ Complete control over build process
-- ✅ Use custom Rust flags if needed
+- ✅ Use custom Python flags if needed
 - ✅ Traditional install steps
 
 ---
@@ -65,7 +65,7 @@ sudo cp target/release/omni /usr/local/bin/owpro
 - **Target:** Users who want `owpro` available system-wide
 - **Size:** 6.5 KB
 - **Features:**
-  - Automatic Rust installation
+  - Automatic Python installation
   - Git-based cloning to `~/.local/share/omniwordlist-pro`
   - Handles `sudo` gracefully
   - Colorized output with progress
@@ -121,7 +121,7 @@ owpro tui
 ## ✅ Installation Checklist
 
 - [x] **install.sh** — Global automatic installer
-  - [x] Rust detection/installation
+  - [x] Python detection/installation
   - [x] Git clone/pull logic
   - [x] Build orchestration
   - [x] Global PATH installation
@@ -149,11 +149,11 @@ owpro tui
 ```
 User runs: curl ... | bash
     ↓
-Check Rust → Install if missing
+Check Python → Install if missing
     ↓
 Clone repo to ~/.local/share/omniwordlist-pro
     ↓
-cargo build --release
+python3 omni.py
     ↓
 cp binary → /usr/local/bin/owpro (with sudo if needed)
     ↓
@@ -166,11 +166,11 @@ Show help & examples
 ```
 User runs: ./quick-install.sh (from repo root)
     ↓
-Check Cargo.toml exists
+Check setup.py exists
     ↓
-Verify Rust installed
+Verify Python installed
     ↓
-cargo build --release
+python3 omni.py
     ↓
 Add alias owpro to ~/.bashrc/.zshrc
     ↓
@@ -197,17 +197,17 @@ owpro run --preset pentest_default -o output.txt
 # In the project directory
 owpro run --min 3 --max 5 --charset abc
 # Or use full path
-./target/release/omni run --min 3 --max 5 --charset abc
+python3 omni.py run --min 3 --max 5 --charset abc
 ```
 
 ---
 
 ## 🛠️ Troubleshooting
 
-### Issue: "Rust not installed"
+### Issue: "Python not installed"
 **Solution:** `install.sh` handles this automatically. If manual:
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.pythonup.rs | sh
 ```
 
 ### Issue: "Permission denied" for /usr/local/bin
@@ -222,7 +222,7 @@ source ~/.bashrc  # or ~/.zshrc
 ### Issue: Build timeout or failure
 **Solution:** Rebuild with more verbosity:
 ```bash
-cargo build --release --verbose
+python3 omni.py --verbose
 ```
 
 ---
@@ -255,7 +255,7 @@ cargo build --release --verbose
 
 ## 📊 System Requirements
 
-| Method | OS | Rust | Git | Time |
+| Method | OS | Python | Git | Time |
 |--------|----|----|-----|------|
 | **One-liner** | Linux/macOS/Windows | Auto-install | Required | 10-15 min (first time) |
 | **Quick Local** | Linux/macOS/Windows | Required | Required | 5-8 min |
@@ -269,10 +269,10 @@ cargo build --release --verbose
 - **For Development:** Use `quick-install.sh` for fast iteration
 - **For Containers:** Copy `Dockerfile` example (if needed):
   ```dockerfile
-  FROM rust:latest
+  FROM python:latest
   WORKDIR /app
   COPY . .
-  RUN cargo build --release
+  RUN python3 omni.py
   RUN cp target/release/omni /usr/local/bin/owpro
   ENTRYPOINT ["owpro"]
   ```
@@ -287,4 +287,4 @@ cargo build --release --verbose
 
 ---
 
-**Built with ❤️ in Rust** 🦀
+**Built with ❤️ in Python** 🐍

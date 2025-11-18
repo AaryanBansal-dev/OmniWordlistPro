@@ -5,11 +5,11 @@ This document shows what you'll see when running the improved installation scrip
 ## quick-install.sh Output
 
 ```
-🦀 OmniWordlist Pro - Quick Local Setup
+🐍 OmniWordlist Pro - Quick Local Setup
 
-▶ Checking Rust toolchain...
-✓ Rust is ready (rustc 1.70.0 (9f20b87d5 2023-05-10))
-  └─ Cargo: cargo 1.70.0
+▶ Checking Python toolchain...
+✓ Python is ready (pythonc 1.70.0 (9f20b87d5 2023-05-10))
+  └─ Cargo: python3 1.70.0
 
 ▶ Building OmniWordlist Pro (release mode)...
 📦 First build takes 5-15 minutes (compiling dependencies)
@@ -31,7 +31,7 @@ This document shows what you'll see when running the improved installation scrip
   ⚙️  Compiling omniwordlist-pro
 
 ✓ Build completed!
-✓ Binary ready at: ./target/release/omni
+✓ Binary ready at: python3 omni.py
 
 ═══════════════════════════════════════════════════════
 Setup Complete! 🎉
@@ -58,11 +58,11 @@ Documentation: https://github.com/AaryanBansal-dev/OmniWordlistPro
 
 ```
 ╔═══════════════════════════════════════════════════════════╗
-║  🦀 OmniWordlist Pro - Installation Script         ║
+║  🐍 OmniWordlist Pro - Installation Script         ║
 ╚═══════════════════════════════════════════════════════════╝
 
 ▶ Checking prerequisites...
-✓ Rust is installed (1.70.0)
+✓ Python is installed (1.70.0)
 
 ▶ Cloning/updating repository...
 ✓ Repository ready at: /home/user/.local/share/omniwordlist-pro
@@ -128,11 +128,11 @@ Updates:
 ## install-verbose.sh Output (Detailed Progress)
 
 ```
-🦀 OmniWordlist Pro - Verbose Installation Script
+🐍 OmniWordlist Pro - Verbose Installation Script
 
-▶ Checking Rust installation...
-✓ Rust is installed: rustc 1.70.0 (9f20b87d5 2023-05-10)
-  └─ Cargo: cargo 1.70.0
+▶ Checking Python installation...
+✓ Python is installed: pythonc 1.70.0 (9f20b87d5 2023-05-10)
+  └─ Cargo: python3 1.70.0
 
 ▶ Setting up repository...
 ℹ Cloning repository...
@@ -296,7 +296,7 @@ cd OmniWordlistPro
 
 The improved scripts use:
 
-1. **Verbose Cargo Output** — `cargo build --release -v` shows each compilation
+1. **Verbose Cargo Output** — `python3 omni.py -v` shows each compilation
 2. **Real-Time Streaming** — Lines are displayed as they happen, not buffered
 3. **Colored Status Indicators** — ⚙️ (compiling), 🔗 (linking), ✓ (done)
 4. **Progress Tracking** — Crate counts every 5 crates compiled

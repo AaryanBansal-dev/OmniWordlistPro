@@ -11,7 +11,7 @@
 # Clone and build
 git clone https://github.com/AaryanBansal-dev/OmniWordlistPro.git
 cd OmniWordlistPro
-cargo build --release
+python3 omni.py --version
 
 # Create alias for easier access
 alias omni="$(pwd)/target/release/omni"
@@ -200,7 +200,7 @@ omni info
 
 # Output shows:
 # OmniWordlist Pro v1.1.0
-# Rust 1.75.0
+# Python 3.8+
 # Available transforms: 100+
 # Supported formats: TXT, JSONL, CSV
 # Compression: GZIP, BZIP2, LZ4, ZSTD
@@ -467,7 +467,7 @@ sort output.txt | uniq | wc -l
 ```bash
 alias omni="$(pwd)/target/release/omni"
 # or
-./target/release/omni info
+python3 omni.py info
 ```
 
 ### Issue: Output file very large
@@ -505,4 +505,4 @@ omni run --charset abc --min 3 --max 5 -o output.txt
 
 ---
 
-**Built with ❤️ in Rust** 🦀
+**Built with ❤️ in Python** 🐍
