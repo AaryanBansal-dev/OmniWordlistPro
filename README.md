@@ -2,9 +2,9 @@
 
 **Version:** 1.1.0  
 **Author:** Aaryan Bansal  
-**Language:** 100% Pure Python 🐍  
+**Language:** Python
 **Repository:** https://github.com/AaryanBansal-dev/OmniWordlistPro  
-**Build Status:** ✅ Actively Maintained  
+**Build Status:** Actively Maintained  
 **Last Updated:** November 18, 2025
 
 ---
